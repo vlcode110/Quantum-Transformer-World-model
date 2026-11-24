@@ -1,0 +1,19 @@
+{
+  "prior": "classical_control",
+  "prior_params": 18672,
+  "prior_params_replaced": 131840,
+  "quantum_params": 0,
+  "total_params": 1931893,
+  "task": "cartpole",
+  "quantum": false,
+  "partial_obs": false,
+  "seed": 3,
+  "env_steps": 80000,
+  "final_eval_return": 500.0,
+  "final_eval_std": 0.0,
+  "solved_at_step": 62500,
+  "gate": 475.0,
+  "gate_met": true,
+  "wall_clock_s": 7942.465636014938,
+  "run_dir": "/Users/ronnie/Documents/PhD/qtwm/Phase_2_Closed_Loop/runs/cartpole_classical_ctrl_full_b8x16h10_seed3"
+}

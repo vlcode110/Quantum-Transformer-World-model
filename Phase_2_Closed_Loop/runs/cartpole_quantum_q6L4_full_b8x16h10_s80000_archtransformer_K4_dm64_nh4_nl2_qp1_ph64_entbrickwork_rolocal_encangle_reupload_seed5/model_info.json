@@ -1,0 +1,10 @@
+{
+  "prior": "quantum",
+  "prior_params": 84770,
+  "prior_params_replaced": 131840,
+  "quantum_params": 28,
+  "total_params": 1997991,
+  "obs_dim": 4,
+  "action_dim": 2,
+  "env": "CartPole-v1 (full observation)"
+}

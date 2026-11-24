@@ -1,0 +1,43 @@
+{
+ "wire0_is_msb": false,
+ "shots": 504,
+ "rms_deviation": 0.05941823541145698,
+ "gradients": {
+  "brickwork": {
+   "hardware": -0.6230158730158727,
+   "exact": -0.5533118775777401,
+   "difference": -0.06970399543813255,
+   "evaluations": {
+    "1": {
+     "hardware": -0.4285714285714284,
+     "exact": -0.3281758421431099
+    },
+    "-1": {
+     "hardware": 0.817460317460317,
+     "exact": 0.7784479130123703
+    }
+   }
+  },
+  "ring_cascade": {
+   "hardware": 0.0734126984126984,
+   "exact": 0.037990010481714714,
+   "difference": 0.03542268793098369,
+   "evaluations": {
+    "1": {
+     "hardware": 0.05158730158730158,
+     "exact": 0.01854491637209027
+    },
+    "-1": {
+     "hardware": -0.09523809523809523,
+     "exact": -0.05743510459133916
+    }
+   }
+  }
+ },
+ "jobs": {
+  "brickwork_plus": "01a11b3b-f2fe-73a2-8a0c-4ad41a9838c8",
+  "brickwork_minus": "01a11b54-e19f-73a7-8945-bcb974fa6ce1",
+  "ring_cascade_plus": "01a11b88-9f10-741f-8f37-aafec716ae1a",
+  "ring_cascade_minus": "01a11bcb-4fc4-73d9-a1d1-c69a901d7657"
+ }
+}

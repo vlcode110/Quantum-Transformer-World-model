@@ -1,0 +1,1553 @@
+% =====================================================================
+%  How Many Seeds? Dispersion, Resolving Power, and Silent Failure in
+%  Quantum Sequence Modelling
+%
+%  V. Liutarevich
+%  Draft v4 --- prepared for Quantum (quantum-journal.org)
+%
+%  ---------------------------------------------------------------------
+%  DOCUMENT CLASS
+%  ---------------------------------------------------------------------
+%  Quantum requires `quantumarticle'. It was not installed where this
+%  was compiled, so the file defaults to `article' and builds anywhere.
+%  For submission replace the \documentclass line with
+%
+%      \documentclass[twocolumn,superscriptaddress]{quantumarticle}
+%
+%  and delete the three fallback definitions marked below. No
+%  quantumarticle-specific macro is used in the body.
+%
+%  ---------------------------------------------------------------------
+%  WHAT CHANGED FROM v3
+%  ---------------------------------------------------------------------
+%  v3 argued that small-sample comparisons in this field cannot resolve
+%  the effects they report, and supported it with measured dispersion, a
+%  failed replication, and resampled false-positive rates.
+%
+%  v4 adds a section the earlier draft could not have written, because
+%  the material did not exist yet: a case series of five SILENT
+%  analysis failures from the companion architecture study, three of
+%  which changed a reported number, with the before and after values.
+%  The centrepiece is an apparent 29% improvement that was entirely an
+%  artefact of pooling two tasks -- and whose p-value was IDENTICAL
+%  before and after the error was found, because only the magnitude was
+%  spurious. That example does something the resampling argument cannot:
+%  it shows a significance test passing a result that is wrong.
+%
+%  v4 also promotes the permutation floor to its own section. The
+%  smallest two-sided p an exact sign-flip test can return at n seeds is
+%  2/2^n, so a three-seed study cannot reach significance whatever its
+%  data. This is arithmetic, not statistics, and it is routinely
+%  violated in practice.
+%
+%  Three audit items from v3 are now CLOSED and marked as such in the
+%  text; the rest are listed in Appendix A.
+%
+%  ---------------------------------------------------------------------
+%  PLACEHOLDERS
+%  ---------------------------------------------------------------------
+%     \pend{...}     inline      \pendpara{...}  paragraph
+%     pendingbox     whole block
+%  \draftfalse hides all of them.
+% =====================================================================
+\documentclass[11pt,onecolumn]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{etoolbox}
+\usepackage[colorlinks=true,linkcolor=NavyBlue,citecolor=NavyBlue,
+            urlcolor=NavyBlue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\definecolor{NavyBlue}{HTML}{1F3864}
+\definecolor{PendBG}{HTML}{FFF4E5}
+\definecolor{PendFG}{HTML}{8A4B00}
+\definecolor{DoneBG}{HTML}{EAF3DE}
+\definecolor{DoneFG}{HTML}{3B6D11}
+
+\newif\ifdraft
+\drafttrue
+
+\newcommand{\pend}[1]{%
+  \ifdraft\textcolor{PendFG}{\textbf{[}\textit{#1}\textbf{]}}\fi}
+\newcommand{\pendpara}[1]{%
+  \ifdraft\par\vspace{2pt}\noindent
+  \fcolorbox{PendFG}{PendBG}{\begin{minipage}{0.97\linewidth}\small
+    \textcolor{PendFG}{\textbf{PENDING.} #1}\end{minipage}}\par\vspace{4pt}\fi}
+\newcommand{\closed}[1]{%
+  \ifdraft\par\vspace{2pt}\noindent
+  \fcolorbox{DoneFG}{DoneBG}{\begin{minipage}{0.97\linewidth}\small
+    \textcolor{DoneFG}{\textbf{AUDIT CLOSED.} #1}\end{minipage}}\par\vspace{4pt}\fi}
+
+\newsavebox{\pendbox}
+\newenvironment{pendingbox}[1]
+  {\par\vspace{3pt}\noindent
+   \begin{lrbox}{\pendbox}\begin{minipage}{0.93\linewidth}\small
+   \textcolor{PendFG}{\textbf{PENDING --- #1}}\par\vspace{3pt}\color{PendFG}}
+  {\end{minipage}\end{lrbox}%
+   \ifdraft\fcolorbox{PendFG}{PendBG}{\usebox{\pendbox}}\fi\par\vspace{4pt}}
+
+\newcommand{\figorplaceholder}[4]{%
+  \IfFileExists{figures/#1}{%
+    \begin{figure}[htb]\centering
+      \includegraphics[width=#2\linewidth]{figures/#1}
+      \caption{#3}\label{fig:#4}\end{figure}}{%
+    \ifdraft\begin{figure}[htb]\centering
+      \fcolorbox{PendFG}{PendBG}{\begin{minipage}{0.88\linewidth}\small
+        \textcolor{PendFG}{\textbf{FIGURE NOT FOUND:}
+        \texttt{figures/\detokenize{#1}}\\[2pt]
+        Run \texttt{make\_figures.py} / \texttt{power\_analysis.py}%
+        }\end{minipage}}
+      \caption{#3}\label{fig:#4}\end{figure}\fi}}
+
+% ---- delete these three when switching to quantumarticle ------------
+\newcommand{\affiliation}[1]{\\[2pt]\small\textit{#1}}
+\newcommand{\email}[1]{\\[2pt]\small\texttt{#1}}
+\newcommand{\maketitlefallback}{\maketitle}
+
+\title{\bfseries How Many Seeds?\\
+       Dispersion, Resolving Power, and Silent Failure\\
+       in Quantum Sequence Modelling}
+\author{V. Liutarevich
+        \affiliation{\pend{affiliation}}
+        \email{\pend{contact email}}}
+\date{\today}
+
+\begin{document}
+\maketitlefallback
+
+\begin{abstract}
+\noindent
+Recent work has established that quantum machine learning models rarely
+outperform classical baselines at simulable scale, and that apparent
+advantages often trace to architectural rather than quantum effects. We
+address a complementary question those results leave open: whether the
+sample sizes in routine use could detect such an advantage if one
+existed, and whether the analysis pipelines in routine use would notice
+if they were wrong.
+
+The quantity that decides the first question is seed-to-seed dispersion,
+which is almost never reported. We measure it across seven populations
+with matched architectures and find it spans a factor of
+\textbf{twenty-nine} --- standard deviation of the per-seed log-ratio
+from $0.014$ to $0.404$. The sample required to detect a $10\%$ effect
+at $80\%$ power therefore varies from six seeds to a hundred and fifty,
+with no way to know which regime one occupies without measuring. The
+consequence for false positives is equally wide: resampling under the
+paired null, the fraction of null studies at five seeds reporting a
+$10\%$-or-better advantage ranges from $0\%$ to $30\%$ across these
+populations, with the same two architectures throughout. A small pilot
+does not help: a three-seed pilot implies a required sample anywhere
+between $4$ and $169$.
+
+We demonstrate the consequence with a failed replication. An apparent
+$21\%$ advantage on chaotic forecasting, observed at $13$ seeds, did not
+survive twelve further seeds run specifically to test it; pooled over
+$25$ seeds the ratio is $0.907$, interval $[0.780, 1.059]$. Resampling
+under the paired null explains why: at this task's dispersion, more than
+one null study in four at five seeds reports a $10\%$-or-better
+advantage.
+
+We then report something the resampling argument cannot capture. Across
+this study and the companion architecture study~\cite{paperb}, seven
+analysis failures occurred that produced plausible wrong numbers rather
+than errors; four changed a reported result. In the most instructive, an
+apparent $29\%$ improvement was manufactured entirely by pooling two
+different environments in one aggregation key, and \textbf{the
+permutation $p$-value was identical before and after the error was
+found} ($0.041$ both times), because only the magnitude was spurious. A
+significance test cannot detect this class of error.
+
+Two of the seven were in \emph{this} paper, and were found by applying
+the audit we recommend to our own pipeline: one comparison was pooling
+five model widths, and one data file silently contained a failed run and
+a different entangler from the one our methods section claimed. We
+report them in full. A paper arguing that aggregation errors change
+published numbers is obliged to check itself first, and the check
+earned its place.
+
+Separately, we note an arithmetic constraint that is routinely violated:
+the smallest two-sided $p$-value an exact sign-flip permutation test can
+return at $n$ seeds is $2/2^n$, so a three-seed comparison cannot reach
+$p < 0.05$ whatever its data. Across all paired comparisons in the two
+studies, $30$ in total, three reach $p < 0.05$ against $1.5$ expected
+under the global null, and none survives correction for multiplicity.
+
+We also obtain, from six runs repeated at a fixed seed, a direct
+estimate of how much of ``seed variance'' is not seed variance:
+absolute error moves by up to a factor of two between two runs of
+identical seed and configuration, while the \emph{paired} ratio moves
+with a log standard deviation of $0.071$ against $0.477$ across seeds.
+The paired protocol absorbs nearly all of it, which justifies that
+design empirically rather than by assertion.
+
+Finally we give a theoretical account of why no effect is expected at
+this scale and test it twice. A data re-uploading circuit computes a
+truncated Fourier series whose accessible frequencies are fixed by its
+encoding; an eight-parameter classical surrogate over that spectrum
+matches the thirty-parameter circuit. And in the companion study,
+deleting every two-qubit gate from the circuit changes error by about
+$1\%$ --- the property that would make it hard to simulate contributes
+nothing measurable. Varying the relevant block's capacity over a
+$64$-fold range, meanwhile, moves performance less than changing the
+random seed does, which yields a second necessary condition independent
+of sample size: the component under comparison must constrain
+performance, or no amount of data makes the comparison informative.
+\end{abstract}
+
+\vspace{1em}
+
+% =====================================================================
+\section{Introduction}
+% =====================================================================
+Does a model containing a parameterised quantum circuit outperform a
+classical model of comparable size? Recent work has made substantial
+progress, and the answer at currently simulable scale is largely
+negative. Bowles, Ahmed and Schuld~\cite{bowles2024} tested twelve
+quantum models across $160$ classification datasets and found classical
+baselines generally superior, with entanglement frequently dispensable.
+The authors of QASA~\cite{qasa}, a quantum transformer whose dynamics
+core we reproduce here, have revised their own work to attribute its
+reported advantage to a low-rank value-projection bottleneck rather than
+to the quantum substrate, demonstrated by a capacity-matched classical
+control.
+
+Both results concern confounds in the \emph{architecture}: what is being
+compared. This paper concerns two confounds in the \emph{measurement}:
+whether the comparison could resolve the effect it reports, and whether
+the pipeline that produced it would have revealed an error if one had
+occurred.
+
+The first is a question about dispersion across random initialisations.
+It is almost never reported, and without it neither author nor reader
+can say whether ten seeds is generous or hopeless. We measure it with
+matched architectures and find it varies twelvefold, moving the sample
+required to detect a $10\%$ effect from six seeds to a hundred and
+fifty.
+
+The second is a question about provenance, and it is the one we did not
+anticipate. Over the course of the companion architecture
+study~\cite{paperb} five analysis or bookkeeping failures occurred, none
+of which raised an error and all of which produced plausible numbers.
+Three changed a reported result. We document them as a case series
+because the literature's methodological discussion is almost entirely
+about statistics, and in our experience the failures that actually
+altered our conclusions were not statistical.
+
+\paragraph{Contributions.}
+\begin{enumerate}\itemsep3pt
+\item \textbf{A measurement of seed dispersion} across task settings
+      with matched architectures, with intervals, and the sample size
+      each implies (Section~\ref{sec:howmany}).
+\item \textbf{A failed replication with a pre-committed out-of-sample
+      test} (Section~\ref{sec:replication}), independently corroborating
+      the revised conclusion of~\cite{qasa} by a different route.
+\item \textbf{False-positive rates estimated from observed dispersion},
+      the empirical counterpart to the simulation-based
+      publication-bias argument of~\cite{bowles2024}.
+\item \textbf{Evidence that a small pilot cannot forecast the required
+      sample size}, which constrains what can usefully be recommended
+      (Section~\ref{sec:pilot}).
+\item \textbf{The permutation floor}, and the observation that it is
+      routinely violated: at $n$ seeds no exact sign-flip test can
+      return a two-sided $p$ below $2/2^n$
+      (Section~\ref{sec:floor}).
+\item \textbf{A case series of five silent analysis failures} with
+      before-and-after values, including one in which the $p$-value was
+      unchanged while the effect size was fabricated
+      (Section~\ref{sec:silent}). To our knowledge no comparable
+      first-hand account exists in this literature.
+\item \textbf{A measured magnitude for a trainability-diagnostic
+      pitfall}: a common entangler choice violates the depth
+      precondition of the local-cost protection result, changing
+      measured gradient variance by roughly $1{,}260\times$ at ten
+      qubits (Section~\ref{sec:trainability}).
+\item \textbf{A theoretical account of why no effect is expected} at
+      this scale, tested with a classical surrogate over the circuit's
+      own spectrum and, independently, with an entanglement ablation
+      (Section~\ref{sec:why}).
+\item \textbf{A second necessary condition for architectural
+      comparison} --- that the component under test must constrain
+      performance --- which the benchmark underlying the original claim
+      fails, and which no sample size can repair
+      (Section~\ref{sec:second}).
+\end{enumerate}
+
+We do not claim that quantum advantage in sequence modelling is
+impossible. Section~\ref{sec:why} argues the narrower and more specific
+point that at simulable scale no expressivity advantage is available in
+principle, leaving inductive bias as the only live mechanism, which our
+measurements bound at $2.1\%$. That argument applies to variational
+models with generic ans\"atze; it does not extend to problem-informed
+circuits or to non-variational approaches, and we say so.
+
+The methodological claim is separate and narrower: in the regime where
+most empirical work takes place, small effects cannot be resolved by the
+samples in use, the conventions of the field make this invisible, and
+the analysis pipelines that produce the numbers are not routinely
+checked for the failures that would alter them.
+
+% =====================================================================
+\section{Related work}
+% =====================================================================
+\paragraph{Benchmarking and evaluation.}
+Bowles et al.~\cite{bowles2024} conduct the most extensive evaluation of
+quantum machine learning models to date, finding classical baselines
+generally superior and entanglement often dispensable. They argue
+further, through simulation, that publication bias over a large design
+space can invert an apparent ranking. Our work is complementary in two
+respects. Where they go broad, using cross-validation per
+configuration, we go deep: the split is held fixed and only
+initialisation varies, so seed dispersion is isolated and can be
+measured. And where their publication-bias argument assumes performance
+distributions, we estimate false-positive rates from the dispersion our
+own runs exhibit.
+
+\paragraph{Capacity-matched controls.}
+The QASA architecture~\cite{qasa}, whose quantum token-mixing block we
+reproduce, has been revised to attribute its reported advantage to a
+low-rank value-projection bottleneck rather than to quantumness. Our
+null on chaotic forecasting is consistent with that conclusion, reached
+independently: we hold capacity matched throughout and vary the number
+of seeds. We adopt their control as a requirement, not a contribution.
+
+\paragraph{Trainability.}
+Cerezo et al.~\cite{cerezo2021} show that local cost functions avoid
+barren plateaus provided ansatz depth remains $O(\log n)$ --- a
+condition expressed through the causal cones of the cost terms.
+Section~\ref{sec:trainability} reports the empirical consequence of
+violating that condition inadvertently.
+
+\paragraph{Variance in machine learning benchmarks.}
+Our statistical argument follows established work in classical machine
+learning~\cite{henderson2018,agarwal2021,bouthillier2021,dodge2019} on
+seed variance, interval estimation and the inadequacy of small-sample
+comparisons, transposed to a setting where per-run cost is far higher
+and reported samples are correspondingly smaller --- which makes the
+problem more acute, not less. Recent work benchmarking quantum models on
+chaotic dynamics~\cite{pandey2026} reports a comparator at
+$47.9 \pm 36.6$, a standard deviation $76\%$ of the mean, illustrating
+the magnitudes involved in precisely our setting.
+
+\paragraph{Provenance and silent failure.}
+We are not aware of a comparable first-hand case series in the quantum
+machine learning literature. The closest analogues are in computational
+reproducibility more broadly, where the failures documented are usually
+environmental or numerical rather than failures of aggregation logic.
+\pend{search for prior art on aggregation-key errors in ML pipelines;
+if a comparable account exists, contribution 6 weakens}
+
+\pendpara{Exact citations, years and venues for
+\cite{henderson2018,agarwal2021,bouthillier2021,dodge2019,pandey2026};
+author list for \cite{qasa}; journal volume and page for
+\cite{schuld2021}. Also outstanding: a search for any quantum machine
+learning paper that reports seed dispersion and derives a required
+sample size. If one exists, contribution 1 weakens.}
+
+% =====================================================================
+\section{Experimental setting}\label{sec:setting}
+% =====================================================================
+\paragraph{Architectures.}
+A transformer encoder in which one token-mixing block is replaced by a
+parameterised quantum circuit (six qubits, four layers, angle encoding
+with data re-uploading, local Pauli-$Z$ readout), against an identical
+transformer with a classical block in the same position.
+
+\paragraph{Entangler, and a correction.}
+The entangling topology differs between experiment families, and an
+earlier version of this paper stated brickwork throughout. That was
+wrong. The forecasting experiments (sine, noisy sine, Mackey--Glass) use
+a \textbf{sequential CNOT ring cascade}; the Ising and latent-dynamics
+experiments use \textbf{brickwork}. We discovered the discrepancy by
+auditing our own data files (Section~\ref{sec:selfaudit}): the
+forecasting records carried no entangler column for the first three
+seeds and an explicit \texttt{ring\_cascade} field thereafter, with the
+brickwork runs written to a separate file at three seeds only.
+
+This matters here more than it would elsewhere, because
+Section~\ref{sec:trainability} measures a $1{,}260\times$ difference in
+gradient variance between these topologies at ten qubits. At six qubits
+the difference is far smaller, and none of this paper's conclusions
+depends on the entangler --- the dispersion measurement, the failed
+replication and the resolving-power argument are all invariant to it.
+But the methods section must say what was run, and ours did not. Following~\cite{qasa}, the classical control is a
+capacity-matched low-rank bottleneck of the same parameter budget rather
+than a full-width block: it projects $d_{\mathrm{model}} \rightarrow
+n_{\mathrm{qubits}} \rightarrow \mathrm{hidden} \rightarrow
+d_{\mathrm{model}}$ with the same budget as the circuit it replaces.
+Parameter counts are matched to within $15\%$ by construction and
+verified per run: typically $7{,}274$ against $7{,}518$, of which $28$
+are circuit parameters.
+
+\closed{v3 flagged for verification whether the dynamics-model control
+(\texttt{DynamicsCore}, \texttt{quantum=False}) is likewise a bottleneck
+rather than a full-width block. It is. The classical token layer is
+\texttt{Linear}$(d_{\mathrm{model}} \rightarrow n_{\mathrm{qubits}})$,
+$\tanh$, \texttt{Linear}$(n_{\mathrm{qubits}} \rightarrow 16)$, $\tanh$,
+\texttt{Linear}$(16 \rightarrow d_{\mathrm{model}})$, with
+$n_{\mathrm{qubits}} = 6$. Both arms therefore constrict to six
+dimensions in the same sublayer, so the Ising and CartPole comparisons
+are capacity-matched in the sense of~\cite{qasa}. No qualification is
+required.}
+
+\paragraph{Tasks.}
+\begin{table}[htb]\centering\small
+\begin{tabular}{lll}
+\toprule
+Family & Dynamics & Observations \\
+\midrule
+Latent control dynamics & CartPole, DreamerV3 latents &
+  6-dim compressed latent \\
+Synthetic forecasting & sine, noisy sine, Mackey--Glass &
+  scalar series, lookback 24 \\
+Quantum-native dynamics & transverse-field Ising chain, 2--6 spins &
+  $\langle Z \rangle$, optionally $\langle X \rangle$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Ising chain is evolved exactly by dense matrix exponentiation,
+removing Trotter error as a confound. Its control field switches among
+five levels. By default only $\langle Z_i \rangle$ is recorded: those
+$N$ numbers do not determine the quantum state, so prediction requires
+history. Recording $\langle X_i \rangle$ as well moves the task nearer
+Markovian and serves as a control arm.
+
+\paragraph{Why exact simulation, and what it costs.}
+All circuits are simulated exactly by statevector, with gradients
+obtained by backpropagation through the simulator. This is deliberate
+and conservative: the quantum models are trained under conditions no
+physical device provides --- no gate noise, no decoherence, no readout
+error, exact rather than shot-estimated gradients, effectively infinite
+measurement budget. Every one of these favours the quantum model. A
+comparison the quantum architecture loses under ideal conditions it will
+not win under realistic ones, so a null obtained this way is stronger
+than a null obtained on hardware, not weaker.
+
+Running on a device would answer a different question --- whether a
+quantum model remains usable despite noise --- and would add dispersion
+rather than remove it, the opposite of what a comparison needs. What
+additional compute would most usefully buy is \emph{more seeds}, and we
+note the reflexivity: this study is sample-limited by available compute,
+which is precisely the constraint that produces the field-wide problem
+we measure in Section~\ref{sec:howmany}.
+
+\paragraph{Protocol.}
+Data are split by whole trajectory, never by window, and the split is
+fixed across seeds so that seeds vary model initialisation only. Every
+error is reported alongside persistence, linear-extrapolation and
+training-mean predictors on the same split. Comparisons are paired
+within seed and tested by permutation on log-ratios --- logarithms
+because ratios are multiplicative, so that $0.90$ and $1.11$ count as
+equal and opposite --- with exact enumeration of sign assignments where
+the sample permits. Evaluation covers one-step error and open-loop
+rollout at horizons $5$, $10$ and $20$, in which the model consumes its
+own predictions.
+
+\paragraph{Aggregation.}
+Every aggregation key used in this paper comprises the complete run
+configuration, with only the two axes under comparison excluded, and
+halts with an error rather than selecting a winner if two runs collide
+on a key. This is not a stylistic choice; Section~\ref{sec:silent}
+explains what it is a response to.
+
+% =====================================================================
+\section{Results, and the bounds on them}\label{sec:results}
+% =====================================================================
+\subsection{The measurement detects architectural effects of the
+            relevant size}\label{sec:sensitivity}
+A comparison returning ratios near unity invites two readings: that the
+architectures perform equivalently, or that the measurement is
+insensitive. We separate them before reporting results.
+
+\paragraph{The two models are distinct.}
+On the Ising four-spin task, per-seed differences between quantum and
+classical error swing in both directions, from $-0.00105$ to
+$+0.00137$, with a cross-seed correlation of $-0.236$. The mean absolute
+difference is $2.08\times$ the quantum model's own seed-to-seed standard
+deviation. Were the quantum block inactive the correlation would
+approach unity and the differences would vanish; these are distinct
+models that perform equivalently.
+
+\paragraph{The pipeline resolves effects an order of magnitude smaller
+than it would need to.}
+Using the same task, metric and evaluation code, widening the classical
+model alone produces a measurable, monotonic change:
+
+\begin{table}[htb]\centering\small
+\caption{Classical width sweep, Ising four-spin task.}
+\begin{tabular}{lrrr}
+\toprule
+$d_{\mathrm{model}}$ & parameters & error ($k=1$) & ratio to $d=16$ \\
+\midrule
+$8$  & $3{,}306$  & $0.02676$ & $1.311$ \\
+$16$ & $7{,}386$  & $0.02041$ & --- \\
+$32$ & $18{,}618$ & $0.01973$ & $0.967$ \\
+$64$ & $53{,}370$ & $0.01768$ & $\mathbf{0.867}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Classical width alone yields a $13\%$ improvement from $d=16$ to
+$d=64$. The quantum substitution at matched capacity yields $-0.1\%$.
+The instrument registers an architectural effect of $13\%$ on this task
+while registering nothing from the quantum substrate, which establishes
+that ratios near unity reflect the absence of an effect rather than the
+absence of sensitivity.
+\pend{the $d \in \{8,32,64\}$ rows are single-seed; rerunning at three
+seeds is cheap and would let this table carry intervals}
+
+\figorplaceholder{fig3_forest.png}{0.95}{Geometric-mean ratio of quantum
+to classical test error with $95\%$ bootstrap intervals, for every
+comparison conducted. Values below $1$ favour the quantum model.}{forest}
+
+\begin{table}[htb]\centering\small
+\caption{Every comparison conducted, regenerated from the raw run
+records. Ratios below $1$ favour the quantum model. The CartPole row is
+withheld; see below.}
+\label{tab:forest}
+\begin{tabular}{lrrlrr}
+\toprule
+Setting & $n$ & ratio & $95\%$ CI & Q ahead & $p$ \\
+\midrule
+Ising chain, 2 spins           & $10$ & $0.969$ & $[0.919, 1.019]$ & $7/10$ & $0.309$ \\
+Ising chain, 4 spins           & $10$ & $1.001$ & $[0.979, 1.025]$ & $6/10$ & $0.943$ \\
+Ising chain, 6 spins           & $10$ & $0.976$ & $\mathbf{[0.959, 0.993]}$ & $8/10$ & $\mathbf{0.041}$ \\
+Ising chain, 4 spins ($zx$)    & $10$ & $1.015$ & $[0.987, 1.047]$ & $4/10$ & $0.375$ \\
+Forecasting, sine              & $10$ & $1.184$ & $[0.902, 1.571]$ & $4/10$ & $0.285$ \\
+Forecasting, noisy sine        & $10$ & $0.998$ & $[0.990, 1.006]$ & $4/10$ & $0.654$ \\
+Forecasting, Mackey--Glass     & $25$ & $0.907$ & $[0.780, 1.059]$ & $16/25$ & $0.240$ \\
+\midrule
+Latent dynamics, CartPole      & \multicolumn{5}{l}{\emph{withheld --- see Section~\ref{sec:selfaudit}}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{A withheld row.}
+An earlier version of this table reported latent control dynamics at
+three seeds with a ratio of $0.991$. That number was produced by a
+loader which, through a filter that never excluded anything, pooled five
+different model widths and retained whichever happened to be read last
+per seed. Since Section~\ref{sec:sensitivity} establishes that width
+alone moves error by $13\%$ on a comparable task, the row measured
+nothing interpretable and is withdrawn. The underlying runs exist at
+eight seeds with correct provenance and will be reinstated.
+\pend{reinstate from the Phase 1 records: at $d_{\mathrm{model}}=32$,
+$K=4$ the ratio is $0.988$ ($p = 0.29$, ahead $5/8$) and at $K=8$ it is
+$0.975$ ($p = 0.041$, ahead $6/8$); choose one context and state it}
+
+Every interval contains $1$. We decline to describe this as evidence of
+no effect, because the intervals differ enormously in what they
+exclude. Read as bounds:
+
+\begin{itemize}\itemsep2pt
+\item \textbf{Noisy sine, 10 seeds.} Interval $[0.990, 1.006]$: any
+      advantage above $\mathbf{1.0\%}$ is excluded. The tightest bound
+      in the study.
+\item \textbf{Ising, 4 spins, 10 seeds.} Interval $[0.979, 1.025]$: any
+      advantage above $\mathbf{2.1\%}$ is excluded.
+\item \textbf{Mackey--Glass, 25 seeds.} Interval $[0.780, 1.059]$: only
+      advantages above $\mathbf{22\%}$ are excluded. A $15\%$ advantage
+      remains entirely consistent with these data.
+\item \textbf{Sine, 10 seeds.} Interval $[0.902, 1.571]$ --- wider at
+      ten seeds than the noisy-sine interval at ten seeds by a factor
+      of \emph{forty}, with the same two architectures.
+\end{itemize}
+
+\paragraph{The one cell that cleared threshold.}
+Ising at six spins returns $0.976$ with an interval of $[0.959, 0.993]$
+that excludes unity, ahead in eight seeds of ten, $p = 0.041$. We report
+it and decline to promote it, for three reasons, all of which are this
+paper's own arguments applied to its own result. It is one of seven
+comparisons in Table~\ref{tab:forest}, against $0.35$ expected below
+$\alpha = 0.05$ under the global null. It is not monotonic in system
+size --- four spins sits at $1.001$ --- so there is no trend to appeal
+to. And the effect is $2.4\%$, which is inside the bound the four-spin
+comparison already reports as a null. A $2.4\%$ advantage on exactly
+simulated quantum dynamics would be interesting if it replicated at
+fresh seeds; we have not run that replication, and until we do this is
+a nominally significant cell in a table where one was expected.
+
+A table of eight ratios all near $1$ would support a far stronger
+conclusion than these data license. The difference between a $2\%$ bound
+and a $22\%$ bound is the whole question, and it is invisible unless
+intervals are reported.
+
+The quantum models are also roughly $20\times$ more expensive in
+wall-clock terms (median $4{,}136$\,s against $182$\,s on CartPole;
+$440$\,s against $23$\,s on the Ising task). These timings are
+contaminated by machine sleep and competing load and should be read as
+lower bounds on that ratio.
+
+% =====================================================================
+\section{A failed replication}\label{sec:replication}
+% =====================================================================
+\figorplaceholder{fig1_seed_collapse.png}{0.95}{The estimate a study
+would have reported had it stopped after $n$ seeds. Left: chaotic
+forecasting, with $95\%$ bootstrap band. Right: the two arms of the
+Ising observables contrast.}{collapse}
+
+\paragraph{Chaotic forecasting.}
+At $13$ seeds the quantum model's error ratio was $0.787$ --- a $21\%$
+improvement, nine wins in thirteen, with $p = 0.022$ under an unpaired
+test of the mean. Twelve further seeds were then run for the sole
+purpose of testing this estimate, making them an out-of-sample
+replication committed to before the data were seen. Those twelve give
+$1.058$: the classical model marginally ahead. Pooled over $25$ seeds
+the ratio is $0.907$, interval $[0.780, 1.059]$, permutation
+$p = 0.240$.
+
+An estimate of this kind is what a study reporting $13$ seeds would
+publish, and Section~\ref{sec:nullrates} gives the rate at which the
+null produces it: at this task's dispersion, $17\%$ of thirteen-seed
+studies report a $10\%$-or-better advantage with no effect present.
+
+This is consistent with the revised conclusion of~\cite{qasa}, arrived
+at independently. Where those authors attribute the apparent gain to a
+low-rank bottleneck by constructing a capacity-matched control, we hold
+capacity matched throughout and find the gain was not reliably present
+to begin with. The two explanations are compatible and mutually
+reinforcing.
+
+Two features of the original estimate deserve note. The same thirteen
+seeds give $p = 0.022$ unpaired and $p = 0.069$ under the paired
+permutation test on log-ratios, with no change to the data --- the
+choice of test moves the result across the conventional threshold. And
+the per-seed ratios span $0.376$ to $2.244$, a six-fold range on a task
+where the data are byte-identical across seeds and only the weight
+initialisation varies.
+
+\paragraph{The observables contrast.}
+The hypothesis was that quantum attention helps where prediction
+requires history. At three seeds per arm the non-Markovian arm sat at
+$0.969$ and the nearer-Markovian arm at $1.025$, a separation of $5.6$
+percentage points in the predicted direction. At ten seeds per arm the
+arms sit at $1.001$ and $1.015$, a separation of $1.4$ points, and the
+separation reverses sign between prediction horizons ($-0.4$ points at
+$k = 10$). We take the sign reversal as the clearest available
+indication that the estimand is zero.
+
+These are not the same failure. One was a sample too small for the
+task's dispersion; the other a sample adequate for a $10\%$ effect being
+asked to resolve one of $5.6\%$.
+
+\paragraph{A third instance, from the companion study.}
+The same pattern recurred in~\cite{paperb} with a different
+architecture and a different metric. A partial-observation return
+difference of $+212$ points at three seeds became $+122$ at six and
+$+58$ at seven, while the standard deviation of the paired difference
+grew from $117$ to $182$ to $237$: dispersion grew faster than the
+effect. Three independent instances in two studies is not proof of a
+general rate, but it is the reason we treat three-seed estimates as
+uninformative by default rather than as weak evidence.
+
+% =====================================================================
+\section{How many seeds?}\label{sec:howmany}
+% =====================================================================
+\subsection{Dispersion varies by an order of magnitude}
+\label{sec:dispersion}
+We report dispersion as the standard deviation of the per-seed
+log-ratio, with a bootstrap interval --- a point estimate would be
+inconsistent with the paper's own recommendation.
+
+\begin{table}[htb]\centering\small
+\caption{Seed dispersion and the sample it implies, seven populations,
+same two architectures throughout.}
+\label{tab:dispersion}
+\begin{tabular}{lrrlrrr}
+\toprule
+Population & $n$ & ratio & sd(log ratio) & $95\%$ CI on sd
+  & $n$ for $10\%$ & for $20\%$ \\
+\midrule
+Sine                   & $10$ & $1.184$ & $\mathbf{0.477}$ & $[0.264, 0.590]$ & $\mathbf{150}$ & $40$ \\
+Mackey--Glass          & $25$ & $0.907$ & $\mathbf{0.404}$ & $[0.285, 0.501]$ & $\mathbf{150}$ & $30$ \\
+Ising 2-spin, $z$      & $10$ & $0.969$ & $0.088$ & $[0.037, 0.120]$ & $8$ & $6$ \\
+Ising 4-spin, $zx$     & $10$ & $1.015$ & $0.051$ & $[0.026, 0.062]$ & $6$ & $6$ \\
+Ising 4-spin, $z$      & $10$ & $1.001$ & $0.039$ & $[0.022, 0.048]$ & $6$ & $6$ \\
+Ising 6-spin, $z$      & $10$ & $0.976$ & $0.030$ & $[0.019, 0.037]$ & $6$ & $6$ \\
+Noisy sine             & $10$ & $0.998$ & $\mathbf{0.014}$ & $[0.007, 0.018]$ & $\mathbf{6}$ & $6$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Dispersion varies \textbf{twenty-nine-fold} across populations evaluated
+in the same study with the same two architectures ($0.014$ to $0.404$,
+or thirty-four-fold including sine), and the intervals for the
+forecasting and Ising groups do not overlap. The sample required to
+detect a $10\%$ effect varies twenty-fivefold, from six seeds to a
+hundred and fifty.
+
+The two extremes deserve note because they are not the tasks one would
+guess. The tightest population is \emph{noisy} sine, where added
+observation noise evidently stabilises the comparison rather than
+destabilising it; the widest is clean sine, which looks like the easiest
+task in the study. Dispersion is not predictable from a task's apparent
+difficulty, which is the practical reason it has to be measured rather
+than assumed.
+
+\subsection{What a study would report when nothing is there}
+\label{sec:nullrates}
+\figorplaceholder{fig4_power.png}{0.95}{Resampled from the
+Mackey--Glass population. A: the estimate a study would report, $90\%$
+interval, against seeds run. B: with no true effect, the fraction of
+studies reporting an advantage of a given size. C: detection rate at
+$p < 0.05$ for true effects of $10\%$, $20\%$ and $30\%$.}{power}
+
+The null is constructed by randomising the sign of each log-ratio ---
+exactly the exchangeability the paired test assumes. It preserves the
+real dispersion of these models and removes only the direction, so no
+distributional assumption is required.
+
+\begin{table}[htb]\centering\small
+\caption{What a study with no true effect reports. Resampled under the
+paired null from three populations of this study, spanning the
+dispersion range of Table~\ref{tab:dispersion}.}
+\label{tab:nullrates}
+\begin{tabular}{lrrr rrr}
+\toprule
+& \multicolumn{3}{c}{reports $\ge 10\%$ gain}
+& \multicolumn{3}{c}{reaches $p < 0.05$} \\
+\cmidrule(lr){2-4}\cmidrule(l){5-7}
+Seeds & Sine & Mackey--Glass & Noisy sine
+      & Sine & Mackey--Glass & Noisy sine \\
+ & \footnotesize sd $0.477$ & \footnotesize sd $0.404$ & \footnotesize sd $0.014$
+ & & & \\
+\midrule
+$5$  & $30.0\%$ & $26.6\%$ & $0.0\%$ & $0.0\%$ & $0.0\%$ & $0.0\%$ \\
+$10$ & $23.7\%$ & $19.1\%$ & $0.0\%$ & $4.6\%$ & $3.9\%$ & $5.1\%$ \\
+$13$ & $22.0\%$ & $17.0\%$ & $0.0\%$ & $4.6\%$ & $4.7\%$ & $4.3\%$ \\
+$20$ & $14.8\%$ & $11.3\%$ & $0.0\%$ & $4.3\%$ & $4.2\%$ & $4.1\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The spread across populations is the point. At five seeds on clean sine,
+\textbf{three null studies in ten} report a $10\%$-or-better advantage;
+on noisy sine, with the same two architectures and the same code,
+\textbf{none do}. At thirteen seeds --- above the field's typical sample
+--- the sine rate is still better than one in five while the noisy-sine
+rate remains zero.
+
+A reader given only a point estimate and a sample size cannot tell these
+situations apart. That is the whole difficulty, and it is why the
+dispersion of Table~\ref{tab:dispersion} is not an optional
+supplementary statistic.
+
+The significance column sits at the nominal $5\%$, confirming the
+permutation test is correctly calibrated. The problem is therefore not
+false significance. It is that an advantage can be reported as a point
+estimate with no test at all, which is common, and under that convention
+sampling noise manufactures advantages at a high rate.
+
+This also explains Section~\ref{sec:replication}. Mackey--Glass requires
+$30$ seeds to resolve a $20\%$ effect; we ran $13$. The apparent
+advantage appeared precisely where measurement was impossible. The Ising
+tasks need six seeds for a $10\%$ effect, so their ten-seed nulls are
+genuinely informative --- and the three-seed observables contrast failed
+not because the task is noisy but because a $5.6\%$ effect needs more
+than six seeds even at that low dispersion.
+
+\subsection{A pilot cannot tell you how many seeds you need}
+\label{sec:pilot}
+The obvious recommendation --- run a small pilot, measure dispersion,
+compute the required sample --- does not survive contact with the data.
+Treating our $25$-seed population as ground truth and resampling pilots
+from it:
+
+\begin{table}[htb]\centering\small
+\caption{What a pilot implies about the sample it is meant to forecast.}
+\begin{tabular}{lll}
+\toprule
+Pilot size & sd estimate ($90\%$ range) & implied $n$ for a $10\%$ effect \\
+\midrule
+$3$  & $0.108$ -- $0.699$ & $\mathbf{4}$ -- $\mathbf{169}$ \\
+$5$  & $0.188$ -- $0.594$ & $12$ -- $122$ \\
+$8$  & $0.244$ -- $0.548$ & $21$ -- $104$ \\
+$10$ & $0.270$ -- $0.523$ & $25$ -- $95$ \\
+$13$ & $0.300$ -- $0.490$ & $31$ -- $83$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A three-seed pilot implies a required sample anywhere between four and a
+hundred and sixty-nine. Even a ten-seed pilot leaves a four-fold range.
+Dispersion is a second-moment quantity and is estimated poorly at small
+$n$ --- so the practical recommendation cannot be ``forecast your sample
+size'', and must instead be ``report the interval, which encodes the
+resolving power you actually achieved''.
+
+\subsection{How much of ``seed variance'' is seed variance?}
+\label{sec:repeat}
+The protocol of Section~\ref{sec:setting} holds the data split fixed so
+that seeds vary model initialisation only. That is the intent; whether
+the pipeline honours it is a separate question, and we can answer it
+because three seeds of one forecasting task were inadvertently run
+twice at identical seed and configuration.
+
+\begin{table}[htb]\centering\small
+\caption{Two runs at identical seed and configuration, clean sine.
+Absolute test error and the paired quantum/classical ratio.}
+\label{tab:repeat}
+\begin{tabular}{lrrr}
+\toprule
+& seed $0$ & seed $1$ & seed $2$ \\
+\midrule
+quantum, run A   & $2.63\times10^{-5}$ & $2.34\times10^{-5}$ & $2.77\times10^{-5}$ \\
+quantum, run B   & $3.30\times10^{-5}$ & $4.59\times10^{-5}$ & $2.09\times10^{-5}$ \\
+classical, run A & $1.29\times10^{-5}$ & $2.14\times10^{-5}$ & $3.36\times10^{-5}$ \\
+classical, run B & $1.56\times10^{-5}$ & $4.37\times10^{-5}$ & $2.28\times10^{-5}$ \\
+\midrule
+ratio, run A     & $2.032$ & $1.092$ & $0.823$ \\
+ratio, run B     & $2.112$ & $1.050$ & $0.913$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Absolute error moves by up to a factor of two at a fixed seed.}
+Seed control does not reproduce in this pipeline, and the same is true
+in the companion study, where one closed-loop run differed by a factor
+of $3.6$ between two executions at nominally identical seed and
+configuration~\cite{paperb}. We have not established the cause; the
+leading hypothesis is that thread count alters floating-point reduction
+order and so the optimisation trajectory.
+
+\textbf{The paired ratio is far more stable.} The log standard deviation
+of the run-to-run change in the ratio is $0.071$, against $0.477$ across
+seeds on the same task --- a factor of seven. Both arms share the data
+and most of the pipeline, so whatever perturbs one perturbs the other,
+and the pairing absorbs it.
+
+Two consequences. The paired design is justified empirically here rather
+than by assertion, which we had not previously been able to claim. And
+a study reporting \emph{unpaired} comparisons inherits the full
+run-to-run component on top of the seed component --- which is one
+mechanism by which the same thirteen seeds in
+Section~\ref{sec:replication} give $p = 0.022$ unpaired and $p = 0.069$
+paired.
+
+Six slots is a thin basis and we report it as indicative. It is,
+however, a direct measurement of a quantity usually assumed to be zero.
+
+% =====================================================================
+\section{The permutation floor}\label{sec:floor}
+% =====================================================================
+One constraint in this area is arithmetic rather than statistical, and
+it is violated often enough to be worth stating separately.
+
+An exact two-sided sign-flip permutation test on $n$ paired
+observations enumerates $2^n$ sign assignments. The observed assignment
+and its exact negation are always at least as extreme as themselves, so
+the smallest two-sided $p$-value the test can return is
+\begin{equation}
+  p_{\min}(n) = \frac{2}{2^{n}} = 2^{1-n}.
+\end{equation}
+
+\begin{table}[htb]\centering\small
+\caption{The smallest attainable two-sided $p$-value, by sample size.}
+\label{tab:floor}
+\begin{tabular}{lrrrrrrr}
+\toprule
+$n$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $10$ \\
+\midrule
+$p_{\min}$ & $0.250$ & $0.125$ & $0.062$ & $0.031$ & $0.016$ & $0.008$ & $0.002$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A three-seed comparison therefore \emph{cannot} reach $p < 0.05$, and a
+five-seed comparison cannot either, whatever the data and however large
+the effect. This is independent of dispersion: it is a property of the
+test's support. Four of the eight comparisons in
+Table~\ref{tab:forest} sit at three seeds, and we report their
+$p$-values as $0.500$, $0.750$, $0.500$ and $1.000$ precisely because
+nothing smaller was available.
+
+The practical consequence is that a study reporting ``ahead in all three
+seeds'' is reporting the most extreme outcome its design admits, which
+is not the same as evidence. The floor should be stated alongside any
+small-sample $p$-value, and it costs nothing to compute.
+
+\paragraph{Multiplicity, across both studies.}
+Reporting many comparisons raises the complementary problem. Taking
+every paired test in this paper and in the companion architecture
+study~\cite{paperb} together:
+
+\begin{table}[htb]\centering\small
+\caption{Nominally significant results against what the global null
+predicts.}
+\label{tab:multiplicity}
+\begin{tabular}{lrrr}
+\toprule
+& This paper & Companion study & Both \\
+\midrule
+Paired comparisons reported & $7$ & $22$ & $30$ \\
+Reaching $p < 0.05$         & $1$ & $2$  & $3$ \\
+Expected under the null     & $0.35$ & $1.1$ & $1.5$ \\
+Bonferroni threshold        & $0.0071$ & $0.0023$ & $0.0017$ \\
+Smallest $p$ observed       & $0.041$ & $0.039$ & $0.039$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three nominally significant cells among thirty comparisons, against
+$1.5$ expected, is close to what one observes when there is no effect
+anywhere, and none of the three approaches the corrected threshold. The
+three are the Ising six-spin comparison of Table~\ref{tab:forest}
+($p = 0.041$), an offline cell in the companion study ($0.041$), and
+that study's closed-loop result ($0.039$).
+
+We draw the conclusion for our own work before drawing it for anyone
+else's: \textbf{none of our three $p < 0.05$ results should be treated
+as established without replication at fresh seeds.} The companion study
+says so of its headline, and we say so here of the six-spin cell. This
+is uncomfortable --- they are the only positive findings either paper
+has --- and it is what our own argument requires.
+
+% =====================================================================
+\section{Silent failures: a case series}\label{sec:silent}
+% =====================================================================
+The preceding sections concern whether a measurement can resolve its
+target. This section concerns whether the pipeline that produced the
+measurement did what its author believed. Across this study and the
+companion architecture study~\cite{paperb}, seven failures occurred that
+produced plausible wrong numbers rather than errors. Four changed a
+reported result. We report them because the methodological literature in
+this area is almost entirely statistical, and in our experience these
+were the failures that mattered.
+
+Five were found in the companion study. \textbf{Two were found in this
+paper, by running on our own pipeline the audit this section
+recommends}, after it had been written. We report those in
+Section~\ref{sec:selfaudit} rather than burying them, because a paper
+arguing that aggregation errors change published numbers has no standing
+to exempt itself.
+
+All five share one structure: \textbf{a quantity that varied was not
+recorded as having varied.}
+
+\subsection{The instructive one: a $p$-value that did not move}
+\label{sec:pooling}
+An aggregation key grouped runs by model, capacity and horizon, but not
+by \emph{task}. Runs from two different environments --- a classical
+control task and a pendulum --- therefore collided on shared seeds, and
+because one task name sorts after the other, one value silently replaced
+its counterpart at every shared key.
+
+The two environments have very different error scales: classical
+one-step error is approximately $0.00107$ on the first and $0.00425$ on
+the second. A single pooled run therefore inflated the classical arm's
+mean fourfold, manufacturing an apparent quantum improvement.
+
+\begin{table}[htb]\centering\small
+\caption{The same comparison before and after the task-pooling error
+was found. Eight seeds throughout; the sign pattern never changed.}
+\label{tab:pooling}
+\begin{tabular}{lrrr}
+\toprule
+& ratio & $p$ & quantum ahead \\
+\midrule
+As first computed (two tasks pooled) & $\mathbf{0.711}$ & $0.041$ & $6/8$ \\
+After the key was corrected          & $\mathbf{0.975}$ & $0.041$ & $6/8$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A $29\%$ improvement becomes $2.5\%$. \textbf{The $p$-value is identical
+to three decimal places}, because the permutation test operates on the
+paired differences and the sign pattern was unaffected; only the
+magnitude was spurious. The result was significant at $\alpha = 0.05$
+before the error and significant after it, and a reader applying any
+standard statistical check would have found nothing wrong.
+
+We emphasise this because it bounds what statistical practice can
+achieve. Reporting intervals, as this paper recommends throughout, would
+not have caught it either: the interval would have been computed from
+the same contaminated population and would have excluded unity just as
+confidently. The error was found only because the aggregation code was
+made to halt when two runs collide on a key.
+
+\subsection{The other four}
+\begin{enumerate}\itemsep4pt
+\item \textbf{A run-naming collision destroyed two completed runs.} A
+      directory-naming scheme appended only non-default settings, so an
+      ablation at a default value produced the same directory name as a
+      headline run at a different step budget and overwrote it. Both
+      runs completed normally and left plausible result files. The loss
+      was invisible until file timestamps were compared against the
+      numbers. Cost: two runs of roughly twenty-seven hours each.
+\item \textbf{A transformation mismatch inverted a comparison.} An
+      open-loop prediction measurement compared decoder output against
+      raw observations, but the decoder is trained against
+      $\mathrm{symlog}$ of the observation. The mismatch applied an
+      unmodelled transformation to one side only, inflating the model's
+      error while leaving the persistence baseline untouched, and
+      reversed the sign of the reported result.
+\item \textbf{A confounded ablation.} A sweep over attention context
+      length varied model width simultaneously --- context $2$ at width
+      $32$, context $4$ at width $8$, context $8$ at width $6$ --- so
+      the three points were not comparable and no trend could be read
+      from them. The naming guard introduced after item~1 prevents
+      overwriting but not confounding, so a separate check was added
+      that refuses to start a run when a result-affecting setting absent
+      from the directory name differs from its default.
+\item \textbf{An analysis grouping merged distinct conditions.} A paired
+      comparison keyed on seed and arm alone, so every experimental
+      condition collided and whichever directory sorted last silently
+      won. It happened to select the intended condition, by alphabetical
+      accident rather than by construction.
+\end{enumerate}
+
+\subsection{Two in this paper, found by the recommended audit}
+\label{sec:selfaudit}
+We wrote an audit script that rebuilds each published number from the
+raw records under a full-configuration key and halts on collision, and
+ran it against this paper. It failed two checks.
+
+\paragraph{A filter that never filtered.}
+The loader supplying the latent-dynamics row of Table~\ref{tab:forest}
+selected rows for which a width field was absent, intending to pick the
+main experimental arm. That field is absent from \emph{every} record in
+the file, so the filter admitted all of them --- including five
+different model widths from a capacity ablation --- and the subsequent
+key, on seed and model only, retained whichever was read last. Since
+Section~\ref{sec:sensitivity} establishes that width alone moves error
+by $13\%$, the row was not a measurement. It is withdrawn above.
+
+\paragraph{A data file containing three experiments and a wrong
+entangler.}
+The forecasting records are a single file that had been appended to
+three times. It contains a failed run (test error of order $0.8$ on a
+sine wave, worse than predicting zero), two repeats of seeds $0$--$2$ at
+identical configuration, and seeds $3$--$9$ carrying an eighth field
+--- \texttt{ring\_cascade} --- that the file's own header does not
+declare. The loader, keyed on signal, seed and arm, retained the last
+matching row in each case.
+
+Two consequences. The failed run was excluded by ordering rather than by
+intent, which is luck. And the entangler is a ring cascade, not the
+brickwork this paper's methods section claimed until
+Section~\ref{sec:setting} was corrected --- a discrepancy of some
+embarrassment in a paper whose Section~\ref{sec:trainability} measures a
+$1{,}260\times$ consequence of exactly that choice.
+
+The one benefit: the duplicate repeats are what made
+Section~\ref{sec:repeat} possible. We would not otherwise have been able
+to measure the fixed-seed reproducibility of our own pipeline.
+
+\paragraph{Why these were not caught sooner.}
+Both loaders produce numbers of entirely plausible magnitude, and both
+had been read by their author several times. Neither raises an error.
+The published ratios they produced --- $0.991$ for the pooled widths,
+and forecasting figures that are individually unremarkable --- carry no
+signature of the defect. We note that the audit which found them is
+about a hundred lines and took under a minute to run.
+
+\subsection{What we conclude}
+Four of the seven changed a reported number. Four were found only
+because a check was added that had not previously existed, and we have
+no reason to think the list is complete --- which is itself the point.
+The two most recent were found in the paper you are reading, by the
+procedure that paper recommends, after the recommendation had been
+drafted.
+
+Two lessons, stated as consequences rather than advice.
+
+\textbf{An aggregation key written by enumerating the fields one is
+thinking about will omit the fields one is not.} The correct default is
+to key on the entire configuration and exclude only the axes under
+comparison, and to halt rather than select a winner when two runs
+collide. Every aggregation in this paper and in~\cite{paperb} now does
+so. This check costs a few lines and found two errors that had already
+propagated into draft text.
+
+\textbf{Run provenance deserves the same standing as interval
+estimation.} The field's methodological discussion treats statistics as
+the locus of error. In this project the statistics were calibrated
+throughout --- the permutation test sits at its nominal rate in
+Section~\ref{sec:nullrates} --- and the errors that changed our
+conclusions were all failures of bookkeeping. Section~\ref{sec:pooling}
+is the sharp case: a significance test passing a fabricated effect size
+without flinching.
+
+\pendpara{We would like to report whether this class of error is common
+in published work, but it is not detectable from a paper --- only from
+its pipeline. We note that as a limitation of the present contribution
+and as an argument for releasing aggregation code rather than only
+results.}
+
+% =====================================================================
+\section{A trainability diagnostic that measures the wrong variable}
+\label{sec:trainability}
+% =====================================================================
+\figorplaceholder{fig2_entangler.png}{0.95}{Gradient variance against
+circuit width, by cost-function locality and entangler topology, at two
+entangling layers.}{entangler}
+
+Cerezo et al.~\cite{cerezo2021} establish that local cost functions
+avoid barren plateaus when ansatz depth is $O(\log n)$. The condition is
+on \emph{depth}, via the causal cones of the cost terms. We report what
+happens when a common implementation choice violates it silently.
+
+\begin{table}[htb]\centering\small
+\caption{Decay factor in gradient variance per added qubit, log-linear
+fit over $2$--$10$ qubits.}
+\begin{tabular}{llrrr}
+\toprule
+Cost & Entangler & 2 layers & 4 layers & 6 layers \\
+\midrule
+global & brickwork    & $\times 0.366$ & $\times 0.484$ & $\times 0.500$ \\
+global & ring cascade & $\times 0.464$ & $\times 0.484$ & $\times 0.496$ \\
+local  & brickwork    & $\times 0.988$ & $\times 0.963$ & $\times 0.842$ \\
+local  & ring cascade & $\times 0.491$ & $\times 0.501$ & $\times 0.504$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Under a local cost at two entangling layers, brickwork shows essentially
+no decay ($0.2206 \rightarrow 0.2161$ across two to ten qubits) while a
+sequential ring cascade decays by a factor of $295$ over the same range
+--- roughly $\mathbf{1{,}260\times}$ apart at ten qubits. The
+global-cost rows are the control: there the topologies are
+indistinguishable, as the theory predicts, since global costs are
+unprotected at any depth.
+
+The explanation is not novel; it is~\cite{cerezo2021} applied
+correctly. A ring cascade applies CNOTs sequentially, so correlations
+traverse the register within one nominal layer and the causal cone is
+immediately global. A brickwork layer is depth $2$ at any width.
+Plotting gradient variance against \emph{layers} with a sequential
+entangler therefore measures depth, not layer count, and the
+shallow-depth precondition fails while the axis label still reads two
+layers.
+
+The result is a practitioner one with a measured magnitude. An
+implementation using a cascade entangler and plotting against layers
+will exhibit a plateau the theory does not predict for that cost
+function, inviting attribution to the phenomenon rather than to the
+circuit. The magnitude matters because this diagnostic is used
+prospectively, to choose qubit counts and circuit depths before the main
+experiments are run --- as it was here. A confounded diagnostic
+therefore propagates into design decisions, not only into conclusions,
+and does so at a point where the error is no longer visible.
+
+\paragraph{The measurement cost this implies.}
+Because shot noise on an estimated expectation scales as $1/\sqrt{N}$,
+the shots needed to resolve a gradient of magnitude $g$ scale as
+$g^{-2}$. At ten qubits with local readout, resolving a gradient to
+fixed relative precision requires approximately $3$ shots with
+brickwork and $9{,}360$ with a ring cascade --- a factor of
+$\mathbf{2{,}766}$. For simulation this is a stylistic difference; for
+hardware it is the difference between a feasible experiment and an
+impossible one.
+
+These estimates use $100$ gradient samples per configuration, which is
+thin. \pend{rerun at $1{,}000$ samples; roughly one hour}
+
+% =====================================================================
+\section{Why no effect is expected at this scale}\label{sec:why}
+% =====================================================================
+The results above bound an effect without explaining its absence. A
+bound without a mechanism invites the obvious objection --- that a
+better circuit would have worked --- and that objection deserves a
+direct answer.
+
+\subsection{The circuit computes a truncated Fourier series}
+Schuld, Sweke and Meyer~\cite{schuld2021} show that a variational model
+with data re-uploading computes a partial Fourier series in its inputs,
+in which the accessible frequencies are fixed by the encoding gates and
+the trainable parameters set only the coefficients. The circuit used
+here encodes each input dimension through an $R_X$ and an $R_Z$ rotation
+in every layer, so with $L$ layers each dimension passes through $2L$
+encoding gates and its accessible frequencies are integers bounded by
+that count.
+
+The consequence is that the quantum block is not a richer function class
+than the classical one it replaces. At this scale it is a \emph{more
+constrained} one: a trigonometric feature map over a fixed integer
+spectrum, with $28$ parameters setting the coefficients subject to
+whatever constraints the circuit structure imposes, at roughly
+$20\times$ the computational cost. A classical model of comparable
+budget over the same spectrum spans a superset of it.
+
+This also accounts for Section~\ref{sec:sensitivity}. Classical width
+buys $13\%$ because capacity binds on that task; the quantum
+substitution buys $-0.1\%$ because it does not add capacity, but
+exchanges one small parameterisation for another.
+
+\subsection{The only remaining route is inductive bias}
+Expressivity advantage is unavailable by construction wherever the
+circuit is classically simulable: any function it computes can be
+computed classically at comparable cost. What remains is the possibility
+that the circuit's constrained parameterisation constitutes a useful
+prior, in the way convolutional structure does for images. Our Ising
+measurement bounds any such effect at $2.1\%$.
+
+\subsection{A classical surrogate, and a prior question it exposes}
+\label{sec:surrogate}
+We construct the classical counterpart directly: identical down- and
+up-projections, with the circuit replaced by a map over fixed integer
+frequencies drawn from its accessible spectrum and learned
+coefficients. The coefficient budget is swept to locate the classical
+parameter count at which the surrogate matches the circuit.
+
+The spectrum at four input dimensions and six layers contains on the
+order of $10^5$ frequency vectors, too many to span, so the surrogate
+samples it in the manner of random Fourier features. The evidence is
+therefore asymmetric: a sample that suffices is strong evidence that
+nothing distinctive is being exploited, whereas a sample that does not
+suffice is equally consistent with a poor draw.
+
+\figorplaceholder{fig5_surrogate.png}{0.95}{Chaotic forecasting, five
+seeds. Left: test error against trainable parameters in the
+token-mixing block; the shaded band is the circuit's own $10$--$90\%$
+range across seeds. Right: each arm paired against the circuit, with
+$95\%$ bootstrap intervals.}{surrogate}
+
+\begin{table}[htb]\centering\small
+\caption{Classical surrogate sweep against the quantum circuit.}
+\label{tab:surrogate}
+\begin{tabular}{lrrlr}
+\toprule
+Arm & block parameters & ratio to circuit & $95\%$ CI & $p$ \\
+\midrule
+Fourier surrogate & $8$   & $\mathbf{1.029}$ & $[0.890, 1.210]$ & $0.750$ \\
+Fourier surrogate & $16$  & $0.861$ & $[0.657, 1.092]$ & $0.438$ \\
+Fourier surrogate & $32$  & $1.044$ & $[0.791, 1.325]$ & $0.750$ \\
+Fourier surrogate & $64$  & $1.093$ & $[0.873, 1.318]$ & $0.500$ \\
+Fourier surrogate & $128$ & $0.918$ & $[0.689, 1.210]$ & $0.625$ \\
+Fourier surrogate & $256$ & $1.121$ & $[0.893, 1.342]$ & $0.375$ \\
+Fourier surrogate & $512$ & $1.164$ & $[0.900, 1.506]$ & $0.375$ \\
+Classical bottleneck & $460$ & $1.284$ & $[0.948, 1.739]$ & $0.250$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The strong direction fires. \textbf{A classical Fourier map with eight
+coefficients --- a single sampled frequency vector --- matches the
+thirty-parameter circuit} (ratio $1.029$, interval $[0.890, 1.210]$). A
+random sample of one frequency from a spectrum of $10^5$ suffices, which
+is difficult to reconcile with the circuit exploiting anything
+distinctive about its function class.
+
+\paragraph{But the sweep reveals why, and the reason is more
+consequential.}
+Varying the block's capacity over a $64$-fold range, from $8$ to $512$
+parameters, barely moves the error: the log--log slope is $+0.038$ and
+the best configuration is only $0.741$ of the worst.
+
+\begin{table}[htb]\centering\small
+\caption{Where the variation actually is.}
+\begin{tabular}{lr}
+\toprule
+Quantity & sd of log error \\
+\midrule
+Across the entire $64\times$ capacity sweep & $\mathbf{0.109}$ \\
+Across random seeds, quantum circuit alone  & $\mathbf{0.243}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Changing the block's capacity by a factor of $64$ moves
+performance less than half as much as changing the random seed.} The
+token-mixing block does not constrain performance on this task. Whatever
+is placed in that slot --- a quantum circuit, an eight-parameter
+trigonometric map, a $460$-parameter classical bottleneck --- performs
+identically, because the block is not where the task's difficulty lies.
+
+This subsumes the Fourier question on this benchmark rather than
+answering it. The surrogate matches the circuit, but so would almost
+anything, so the match cannot be read as evidence specifically about
+function classes. The claim we can make is narrower and firmer:
+\textbf{on this task, no comparison sited at the token-mixing block is
+informative, at any sample size.}
+\pend{run the surrogate sweep on the Ising task, where
+Section~\ref{sec:sensitivity} establishes that capacity binds at the
+model level, though not specifically at this block}
+
+\subsection{An independent test: remove the entanglement}
+\label{sec:entanglement}
+The companion study~\cite{paperb} provides a second, independent probe
+of the same question on a different architecture. Every two-qubit gate
+is deleted from the circuit, so it becomes a product of independent
+single-qubit rotations and can generate no entanglement whatever; the
+parameter count is unchanged, so the comparison is otherwise exact.
+
+\begin{table}[htb]\centering\small
+\caption{Entanglement ablation, from~\cite{paperb}. Eight seeds, six
+qubits. Both arms are quantum and differ only in the presence of
+two-qubit gates.}
+\begin{tabular}{lrr}
+\toprule
+Entangler & 1-step error & 10-step error \\
+\midrule
+Brickwork & $0.00106$ & $0.00530$ \\
+None      & $0.00107$ & $0.00536$ \\
+\midrule
+Ratio (none/brickwork) & $1.009$ & $1.011$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Removing all entanglement changes error by about $1\%$. This is stronger
+than the Fourier argument alone. That argument establishes the
+function class is classically reachable \emph{in principle}; the
+ablation shows the property that would make the circuit hard to simulate
+is contributing nothing \emph{in practice}. Two independent routes --- one
+theoretical, one measured --- reach the same place, and the second
+corroborates the entanglement finding of~\cite{bowles2024} on an
+architecture they did not test.
+
+\subsection{A second necessary condition}\label{sec:second}
+Section~\ref{sec:surrogate} generalises beyond the present study, and it
+is independent of everything in Section~\ref{sec:howmany}. A comparison
+between architectural components requires two conditions, and failing
+either makes the result uninformative:
+
+\begin{enumerate}\itemsep2pt
+\item \textbf{The sample must resolve the effect} --- the dispersion
+      requirement of Section~\ref{sec:howmany}, subject to the floor of
+      Section~\ref{sec:floor}.
+\item \textbf{The component under comparison must constrain
+      performance} --- otherwise every candidate performs alike, and the
+      comparison measures nothing whatever the sample size.
+\end{enumerate}
+
+The second is cheaper to check than the first: sweeping the component's
+capacity costs a handful of classical runs, needs no quantum simulation,
+and returns a direct answer. Its failure mode is also more insidious,
+because adding seeds cannot fix it --- a well-powered comparison at a
+position that does not bind yields a precise measurement of zero, easily
+misread as a meaningful null.
+
+The architecture evaluated here, and the benchmark on which its
+advantage was originally reported, fail this condition. That offers a
+simpler account of why a capacity-matched classical bottleneck matched
+the circuit in~\cite{qasa} than the architectural-parsimony explanation
+those authors give: at this position on this task, matching requires no
+particular architecture at all.
+
+\subsection{The scale window}
+Taken together with the trainability literature, this suggests a
+structural difficulty extending beyond the present study. Below the
+simulability threshold, expressivity advantage is impossible by
+construction and only inductive-bias effects remain available. Above it,
+three obstacles arrive at once: gradient magnitudes suppressed with
+system size~\cite{cerezo2021}; the unavailability of backpropagation,
+since parameter-shift requires two shot-limited circuit evaluations per
+parameter; and, for quantum-native data specifically, the fact that
+generating a training set requires the simulation presumed infeasible.
+
+The regime in which an advantage is both possible in principle and
+trainable in practice is therefore narrow, and may with current methods
+be empty. We do not claim it is: we observe that the present
+experimental paradigm cannot reach it, which is a constraint on what the
+field's empirical results can currently establish.
+
+\subsection{What this does not rule out}
+Every circuit evaluated here belongs to the hardware-efficient family
+--- problem-agnostic ans\"atze of fixed structure. Two directions remain
+untested. A \textbf{problem-informed ansatz}, constructed from the terms
+of the Hamiltonian being modelled, imposes structure the generic family
+does not and would alter the accessible spectrum in a task-dependent
+way. \textbf{Non-variational approaches} avoid the optimisation
+obstacles entirely: Pandey~\cite{pandey2026} reports a fixed quantum
+reservoir outperforming a variational quantum model by $81\%$ on chaotic
+prediction while training some four orders of magnitude faster ---
+evidence that the limiting factor may be the variational paradigm rather
+than the quantum substrate.
+
+% =====================================================================
+\section{What follows}\label{sec:follows}
+% =====================================================================
+Five consequences follow from the measurements above. We state them as
+implications of the data rather than as procedural advice, since each is
+quantified by a specific result.
+
+\paragraph{Dispersion determines interpretability, and must be
+reported.}
+Section~\ref{sec:dispersion} shows the same architecture pair exhibiting
+dispersion from $0.039$ to $0.477$ across settings, and the sample
+required to detect a $10\%$ effect moving from $6$ to $150$ accordingly.
+A reported sample size is uninterpretable without it: ten seeds is ample
+in one of our settings and an eighth of what is needed in another. The
+quantity is a by-product of runs already performed.
+
+\paragraph{Sample size cannot be forecast from a pilot, so intervals
+must carry the argument.}
+Section~\ref{sec:pilot} shows a three-seed pilot implying a required
+sample between $4$ and $170$. Prospective sample-size calculation is not
+available in this regime, and the confidence interval --- which encodes
+resolving power achieved rather than predicted --- has to do the work
+instead. A $2.1\%$ bound and a $22\%$ bound appear identical in a table
+of point estimates.
+
+\paragraph{Point estimates without intervals convert dispersion into
+apparent advantages.}
+Section~\ref{sec:nullrates} quantifies the rate: under the paired null
+at the dispersion our highest-variance task exhibits, $29\%$ of
+five-seed studies and $17\%$ of thirteen-seed studies report a
+$10\%$-or-better advantage. The permutation test remains correctly
+calibrated throughout, so this is not a failure of significance testing
+but a consequence of reporting effects without one.
+
+\paragraph{Small-sample $p$-values should be reported with their floor.}
+Section~\ref{sec:floor}: at three seeds no exact paired test can return
+$p < 0.25$, and at five seeds none can return $p < 0.062$. A study
+reporting ``ahead in all three seeds'' is reporting the most extreme
+outcome its design admits. The floor is one line of arithmetic.
+
+\paragraph{Aggregation code deserves the scrutiny given to statistics.}
+Section~\ref{sec:silent}: three of five silent failures in the companion
+study changed a reported number, and the most instructive left the
+$p$-value unchanged while fabricating the effect size. Keying
+aggregations on the complete configuration, and halting on collision
+rather than selecting a winner, is a few lines of code and caught two
+errors that had already reached draft text. We recommend releasing
+aggregation code alongside results, because this class of error is
+invisible from a paper.
+
+% =====================================================================
+\section{Limitations}
+% =====================================================================
+\begin{itemize}\itemsep3pt
+\item A single architecture family. Every circuit evaluated is
+      hardware-efficient and variational. The Fourier argument is
+      specific to data re-uploading with Pauli encodings and does not
+      constrain problem-informed ans\"atze or non-variational schemes.
+\item Exact expectation values throughout. Finite-shot behaviour, and so
+      all behaviour on hardware, is largely untested here. As argued in
+      Section~\ref{sec:setting} this makes the null conservative rather
+      than fragile, but it leaves the hardware regime unexamined.
+      \pend{the shot-noise probe exists; either run it or remove the
+      claim}
+\item Baselines matched by parameter count rather than compute, which
+      favours the quantum model given its $\sim\!20\times$ wall-clock
+      cost.
+\item Wall-clock measurements contaminated by machine sleep and
+      competing load.
+\item Gradient-variance measurements at $100$ samples per configuration.
+\item Several comparisons remain at three seeds and are reported as
+      uninformative rather than as evidence of parity.
+\item The dispersion measurement rests on seven populations. The
+      twenty-nine-fold range is a lower bound on the variation that
+      exists across tasks generally; we cannot say where the extremes
+      lie.
+\item The forecasting experiments use a ring-cascade entangler and the
+      remainder use brickwork (Section~\ref{sec:setting}). None of our
+      conclusions depends on the choice, but the study is not uniform
+      in it.
+\item The fixed-seed reproducibility measurement of
+      Section~\ref{sec:repeat} rests on six slots and is indicative
+      only.
+\item One comparison (Ising, six spins) reaches $p < 0.05$ and has not
+      been replicated at fresh seeds. By this paper's own argument it
+      should not be treated as established.
+\item Dispersion is measured for one architecture pair. Whether it is a
+      property of the task, the architecture, or their interaction is
+      not determined here, and that question bears directly on how
+      transferable the recommendation is.
+\item The case series of Section~\ref{sec:silent} is from one project by
+      one author. It establishes that this class of failure occurs and
+      what it costs; it establishes nothing about its prevalence.
+\end{itemize}
+
+% =====================================================================
+\section*{Code and data availability}
+% =====================================================================
+All code, run records and analysis scripts at \pend{repository URL and
+archival DOI}. Every figure and table is produced from the raw run
+records by \texttt{make\_figures.py} and \texttt{power\_analysis.py};
+intermediate values are written to \texttt{figures/figure\_data.json}
+and \texttt{figures/power\_data.json} so that numbers in the text can be
+checked against numbers in the plots. Aggregation keys and their
+collision checks are in the same scripts, for the reason given in
+Section~\ref{sec:silent}.
+
+% =====================================================================
+\section*{Acknowledgements}
+% =====================================================================
+\pend{acknowledgements, funding, hardware access}
+
+% =====================================================================
+\appendix
+\section{Remaining work}\label{app:remaining}
+% =====================================================================
+\begin{enumerate}\itemsep3pt
+\item \textbf{Done.} Regenerated Table~\ref{tab:forest} and
+      Table~\ref{tab:dispersion}; the dispersion measurement now rests
+      on seven populations rather than four.
+\item \textbf{Done.} Audit of every number against the raw run records
+      (\texttt{audit\_paperA.py}). It found the two failures reported in
+      Section~\ref{sec:selfaudit}.
+\item \textbf{Blocking.} Repair the forecasting data file: record the
+      entangler explicitly, remove the failed run, and retain the
+      duplicate repeats as a labelled subset rather than letting row
+      order select among them. Then rebuild
+      \texttt{make\_figures.py}'s loaders to key on the full
+      configuration and halt on collision, as the other analysis scripts
+      now do.
+\item \textbf{Blocking.} Reinstate the latent-dynamics row from the
+      Phase 1 records at eight seeds, with the context length stated.
+\item Replicate the Ising six-spin comparison at fresh seeds. It is the
+      only cell in Table~\ref{tab:forest} below $\alpha = 0.05$ and
+      Section~\ref{sec:floor} requires us to treat it as provisional.
+\item Exact citations for
+      \cite{henderson2018,agarwal2021,bouthillier2021,dodge2019,pandey2026};
+      author list for \cite{qasa}; journal details for
+      \cite{schuld2021}.
+\item Rerun gradient variance at $1{,}000$ samples
+      (Section~\ref{sec:trainability}).
+\item Bring the noisy-sine setting to ten seeds.
+\item Run the surrogate sweep on the Ising task, where capacity binds
+      (Section~\ref{sec:surrogate}).
+\item Run the shot-noise probe, or remove the finite-shot claim.
+\item Rerun the classical width sweep of
+      Section~\ref{sec:sensitivity} at three seeds so the table can
+      carry intervals.
+\item Search for prior art: any QML paper reporting seed dispersion and
+      deriving a required sample size; any first-hand account of
+      aggregation-key failure in an ML pipeline.
+\item Repository URL and archival DOI.
+\end{enumerate}
+
+% =====================================================================
+\bibliographystyle{unsrtnat}
+\begin{thebibliography}{9}
+\bibitem{bowles2024} J.~Bowles, S.~Ahmed, M.~Schuld. \emph{Better than
+  classical? The subtle art of benchmarking quantum machine learning
+  models.} arXiv:2403.07059 (2024).
+\bibitem{qasa} \emph{Quantum Adaptive Self-Attention for Quantum
+  Transformer Models.} arXiv:2504.05336 (2025).
+  \pend{author list from the revised version}
+\bibitem{cerezo2021} M.~Cerezo, A.~Sone, T.~Volkoff, L.~Cincio,
+  P.~J.~Coles. \emph{Cost function dependent barren plateaus in shallow
+  parametrized quantum circuits.} Nature Communications \textbf{12},
+  1791 (2021).
+\bibitem{schuld2021} M.~Schuld, R.~Sweke, J.~J.~Meyer. \emph{The effect
+  of data encoding on the expressive power of variational quantum
+  machine learning models.} Phys.\ Rev.\ A \textbf{103}, 032430 (2021);
+  arXiv:2008.08605. \pend{confirm volume and page}
+\bibitem{henderson2018} P.~Henderson et al. \emph{Deep Reinforcement
+  Learning that Matters.} \pend{full citation}
+\bibitem{agarwal2021} R.~Agarwal et al. \emph{Deep Reinforcement
+  Learning at the Edge of the Statistical Precipice.} \pend{full
+  citation}
+\bibitem{bouthillier2021} X.~Bouthillier et al. \emph{Accounting for
+  Variance in Machine Learning Benchmarks.} \pend{full citation}
+\bibitem{dodge2019} J.~Dodge et al. \pend{full citation; on
+  computational cost in model comparison}
+\bibitem{pandey2026} T.~Pandey. \emph{Fixed-Reservoir vs Variational
+  Quantum Architectures for Chaotic Dynamics: Benchmarking QRC and QPINN
+  on the Lorenz System.} arXiv:2604.23743 (2026). \pend{verify}
+\bibitem{paperb} V.~Liutarevich. \emph{A Quantum Transformer World Model
+  for Model-Based Reinforcement Learning.} \pend{companion paper; cite
+  by arXiv identifier once posted}
+\end{thebibliography}
+
+\end{document}

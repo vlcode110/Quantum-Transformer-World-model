@@ -1,0 +1,31 @@
+{
+  "model": "classical_transformer",
+  "n_spins": 4,
+  "observables": "z",
+  "seed": 2,
+  "params": 53370,
+  "quantum_params": 0,
+  "obs_dim": 4,
+  "d_model": 64,
+  "n_qubits": 6,
+  "q_layers": 4,
+  "entangler": "brickwork",
+  "context": 8,
+  "best_val_1step": 0.017376774922013283,
+  "test_rollout": {
+    "1": 0.018846604973077774,
+    "5": 0.07804092019796371,
+    "10": 0.10655906051397324,
+    "20": 0.12610754370689392
+  },
+  "vs_persistence": 3.1796628924094557,
+  "r_squared": 0.8634762274544447,
+  "baselines": {
+    "persistence": 0.05992585048079491,
+    "linear": 0.07153509557247162,
+    "mean": 0.13804617524147034,
+    "variance": 0.13804632425308228
+  },
+  "wall_clock_s": 52.70923686027527,
+  "run_dir": "/Users/ronnie/Documents/PhD/qtwm/Phase_3_Quantum_Native/runs/classical_transformer_n4_z_d64_q6L4_brickwork_ctx8_seed2"
+}

@@ -1,0 +1,15 @@
+device,noise_model,shots,entangler,cost,layers,qubits,samples,grad_var,signal_absmean,noise_sd,snr
+default.qubit,none,0,brickwork,local,2,4,100,0.2683487412677525,0.43941922273960693,0.0,inf
+default.qubit,none,0,brickwork,local,2,5,100,0.25057198408044135,0.4353832297842879,0.0,inf
+default.qubit,none,0,brickwork,local,2,6,100,0.22499779819899263,0.4016833628171912,0.0,inf
+default.qubit,none,0,brickwork,local,2,7,100,0.2380286419562778,0.4118627259452074,0.0,inf
+default.qubit,none,0,brickwork,local,2,8,100,0.22641814418161924,0.3860047835589547,0.0,inf
+default.qubit,none,0,brickwork,local,2,9,100,0.23940898666134772,0.4179027966243871,0.0,inf
+default.qubit,none,0,brickwork,local,2,10,100,0.21608809665698994,0.3773140644025114,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,4,100,0.010359555448989215,0.06400059489329536,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,5,100,0.006427900819154551,0.05675164207503175,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,6,100,0.0026766351317452893,0.033117788042689826,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,7,100,0.001660024301594476,0.027104739754588648,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,8,100,0.0009575273191479622,0.01513596826306939,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,9,100,0.00029173171743201705,0.010641463762375673,0.0,inf
+default.qubit,none,0,ring_cascade,local,2,10,100,0.00017186415853228133,0.006941547320423183,0.0,inf

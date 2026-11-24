@@ -1,0 +1,2 @@
+device,noise_model,shots,entangler,cost,layers,qubits,samples,grad_var,signal_absmean,noise_sd,snr
+ionq.simulator,aria-1,1000,ring_cascade,local,2,8,1,0.0,0.031,0.021293129606073706,1.4558686568627976

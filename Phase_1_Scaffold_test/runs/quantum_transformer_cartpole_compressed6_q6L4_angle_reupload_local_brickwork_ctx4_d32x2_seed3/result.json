@@ -1,0 +1,28 @@
+{
+  "model": "quantum_transformer",
+  "task": "cartpole",
+  "seed": 3,
+  "params": 18248,
+  "quantum_params": 28,
+  "is_quantum": true,
+  "best_val_1step": 0.0010750592919066548,
+  "test_rollout": {
+    "1": 0.001055005588568747,
+    "5": 0.0026158965192735195,
+    "10": 0.004951713606715202,
+    "20": 0.012244331650435925
+  },
+  "n_qubits": 6,
+  "q_layers": 4,
+  "encoding": "angle_reupload",
+  "readout": "local",
+  "entangler": "brickwork",
+  "d_model": 32,
+  "n_layers": 2,
+  "latent_mode": "compressed",
+  "latent_dim": 6,
+  "context": 4,
+  "dataset_version": "27f691da",
+  "wall_clock_s": 2574.862449169159,
+  "run_dir": "/Users/ronnie/Documents/PhD/qtwm/Phase_1_Scaffold_test/runs/quantum_transformer_cartpole_compressed6_q6L4_angle_reupload_local_brickwork_ctx4_d32x2_seed3"
+}

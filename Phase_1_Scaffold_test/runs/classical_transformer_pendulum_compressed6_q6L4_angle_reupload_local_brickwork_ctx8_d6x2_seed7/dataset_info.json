@@ -1,0 +1,27 @@
+{
+  "trajectory": "traj_pendulum_c0f3cebf.npz",
+  "trajectory_version": "c0f3cebf",
+  "latent_mode": "compressed",
+  "ae_recon_mse": 0.024369383230805397,
+  "ae_explained_var": 0.8412142992019653,
+  "ae_deter_recon_mse": 0.010195760987699032,
+  "ae_deter_explained_var": 0.9608655860195019,
+  "ae_stoch_recon_mse": 0.03854299709200859,
+  "ae_stoch_explained_var": 0.16959989484448945,
+  "latent_dim": 6,
+  "autoencoder": "ae_pendulum_c0f3cebf_d6.pt",
+  "n_windows": {
+    "train": 48440,
+    "val": 10380,
+    "test": 10380
+  },
+  "n_episodes": {
+    "train": 280,
+    "val": 60,
+    "test": 60
+  },
+  "context": 8,
+  "horizon_max": 20,
+  "action_dim": 1,
+  "z_dim": 6
+}

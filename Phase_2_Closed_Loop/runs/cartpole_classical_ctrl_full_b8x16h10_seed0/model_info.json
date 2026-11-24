@@ -1,0 +1,10 @@
+{
+  "prior": "classical_control",
+  "prior_params": 18672,
+  "prior_params_replaced": 131840,
+  "quantum_params": 0,
+  "total_params": 1931893,
+  "obs_dim": 4,
+  "action_dim": 2,
+  "env": "CartPole-v1 (full observation)"
+}

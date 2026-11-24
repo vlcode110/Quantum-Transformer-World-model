@@ -1,0 +1,28 @@
+{
+  "model": "classical_transformer",
+  "task": "pendulum",
+  "seed": 0,
+  "params": 18620,
+  "quantum_params": 0,
+  "is_quantum": false,
+  "best_val_1step": 0.004558051936328411,
+  "test_rollout": {
+    "1": 0.004252563696354628,
+    "5": 0.007094568107277155,
+    "10": 0.01625596359372139,
+    "20": 0.09499441832304001
+  },
+  "n_qubits": 6,
+  "q_layers": 4,
+  "encoding": "angle_reupload",
+  "readout": "local",
+  "entangler": "brickwork",
+  "d_model": 32,
+  "n_layers": 2,
+  "latent_mode": "compressed",
+  "latent_dim": 6,
+  "context": 8,
+  "dataset_version": "c0f3cebf",
+  "wall_clock_s": 207.05812692642212,
+  "run_dir": "/Users/ronnie/Documents/PhD/qtwm/Phase_1_Scaffold_test/runs/classical_transformer_pendulum_compressed6_q6L4_angle_reupload_local_brickwork_ctx8_d32x2_seed0"
+}

@@ -1,0 +1,1 @@
+{"id":"01a11b54-e19f-73a7-8945-bcb974fa6ce1","status":"completed","target":"qpu.forte-1","type":"circuit","circuits":1,"request":1791459910,"cost_usd":168.2,"debias":true,"project_id":"1265c195-b5ab-4acb-8479-a4fa4e3f1f00"}

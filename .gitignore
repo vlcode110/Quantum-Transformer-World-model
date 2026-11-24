@@ -1,0 +1,87 @@
+# ---------------------------------------------------------------------
+# Model weights and caches are excluded; RUN RECORDS ARE NOT.
+#
+# Every number in either paper is derived from result.json, config.json,
+# log.csv and grad_log.json, all of which are committed. The checkpoints
+# are only needed to re-score an agent without retraining it, and they
+# are far too large for a git repository (Phase 2 alone holds 66 runs of
+# several MB each). If you need them, retrain: the run directory name
+# encodes every setting, and training is deterministic up to the
+# threading caveat documented in Paper A Section 6.4.
+# ---------------------------------------------------------------------
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.npy
+*.h5
+
+# dataset caches, rebuilt on demand from the generators in dataset.py.
+# Each is a few MB of trajectories keyed by a hash of the generating
+# settings; dataset.py regenerates them deterministically, and the hash
+# is recorded as `dataset_version` in every result.json so results from
+# different trajectory versions can be told apart.
+**/data/datasets/
+**/data/cache/
+**/.dataset_cache/
+
+# timestamped safety copies made by the sweep drivers before overwriting
+# anything. Useful locally, noise in a repository.
+**/runs_backup_*/
+**/runs_old*/
+**/*_backup/
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# latex build products; the .tex and figures/ are committed
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+
+# os / editor
+.DS_Store
+._*
+# Word lock files, created while a .docx is open
+~$*
+*.tmp
+.Spotlight-V100
+.Trashes
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# local run logs: large, machine-specific, and not inputs to any result.
+# The per-run log.csv files inside runs/ ARE committed; these are the
+# driver-script stdout captures.
+logs/
+logs_remaining/
+logs_ablation/
+logs_replication/
+nohup.out
+
+# credentials. IONQ_API_KEY is read from the environment and must never
+# be written to a file in this tree.
+.env
+*.key
+*_secret*
+credentials*

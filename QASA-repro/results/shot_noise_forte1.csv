@@ -1,0 +1,3 @@
+device,noise_model,shots,entangler,cost,layers,qubits,samples,grad_var,signal_absmean,noise_sd,snr
+ionq.simulator,forte-1,1000,brickwork,local,2,8,1,0.0,0.587,0.02449203119050633,23.966979113906017
+ionq.simulator,forte-1,1000,ring_cascade,local,2,8,1,0.0,0.039999999999999994,0.03146012052859095,1.2714509457663394

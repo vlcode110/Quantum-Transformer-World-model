@@ -1,0 +1,19 @@
+{
+  "prior": "quantum",
+  "prior_params": 18658,
+  "prior_params_replaced": 131840,
+  "quantum_params": 28,
+  "total_params": 1930853,
+  "task": "cartpole",
+  "quantum": true,
+  "partial_obs": true,
+  "seed": 4,
+  "env_steps": 80000,
+  "final_eval_return": 389.05,
+  "final_eval_std": 137.83340487704714,
+  "solved_at_step": 47500,
+  "gate": 475.0,
+  "gate_met": false,
+  "wall_clock_s": 52159.300495147705,
+  "run_dir": "/Users/ronnie/Documents/PhD/qtwm/Phase_2_Closed_Loop/runs/cartpole_quantum_q6L4_po_b8x16h10_seed4"
+}

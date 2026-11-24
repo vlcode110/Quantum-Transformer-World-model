@@ -1,0 +1,21 @@
+{
+ "device": "ionq.qpu",
+ "backend": "forte-1",
+ "n_qubits": 8,
+ "n_layers": 2,
+ "shots": 500,
+ "seed": 0,
+ "results": {
+  "brickwork": {
+   "measured": -0.623015873015873,
+   "exact": -0.5533118775777409,
+   "seconds": 5025.0
+  },
+  "ring_cascade": {
+   "measured": 0.0734126984126984,
+   "exact": 0.03799001048171469,
+   "seconds": 7610.2
+  }
+ },
+ "total_shots": 2000
+}

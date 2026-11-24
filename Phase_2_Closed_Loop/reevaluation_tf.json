@@ -1,0 +1,94 @@
+{
+ "": {
+  "mean": 443.88,
+  "std": 80.66886388192164,
+  "sem": 11.40830013630427,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "arch_class",
+    "transformer"
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 7,
+  "previous_5_episode": 444.15
+ }
+}

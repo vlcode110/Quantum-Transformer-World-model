@@ -1,0 +1,4 @@
+torch>=2.1
+gymnasium[classic-control]>=0.29
+numpy>=1.24,<2  # torch wheels for py3.9 are built against NumPy 1.x
+matplotlib>=3.7

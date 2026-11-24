@@ -1,0 +1,27 @@
+{
+  "trajectory": "traj_cartpole_27f691da.npz",
+  "trajectory_version": "27f691da",
+  "latent_mode": "compressed",
+  "ae_recon_mse": 0.03214060515165329,
+  "ae_explained_var": 0.81312096118927,
+  "ae_deter_recon_mse": 0.02753922902047634,
+  "ae_deter_explained_var": 0.9097152641999218,
+  "ae_stoch_recon_mse": 0.03674198314547539,
+  "ae_stoch_explained_var": 0.05658905929548763,
+  "latent_dim": 6,
+  "autoencoder": "ae_cartpole_27f691da_d6.pt",
+  "n_windows": {
+    "train": 52412,
+    "val": 10935,
+    "test": 10591
+  },
+  "n_episodes": {
+    "train": 140,
+    "val": 30,
+    "test": 30
+  },
+  "context": 16,
+  "horizon_max": 20,
+  "action_dim": 2,
+  "z_dim": 6
+}

@@ -1,0 +1,5 @@
+torch>=2.1
+pennylane>=0.35
+numpy>=1.24,<2       # torch wheels for py3.9 are built against NumPy 1.x
+autoray<0.7          # PennyLane <=0.35 (the last py3.9 line) needs the old
+                     # autoray API; 0.7 moved NumpyMimic and breaks the import

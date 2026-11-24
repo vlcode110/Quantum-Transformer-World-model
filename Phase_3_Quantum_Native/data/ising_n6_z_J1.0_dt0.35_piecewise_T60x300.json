@@ -1,0 +1,11 @@
+{
+  "description": "6-spin transverse-field Ising chain, J=1.0, field levels [0.2, 0.6, 1.0, 1.4, 1.8], dt=0.35, observing <Z> only (non-Markovian)",
+  "obs_dim": 6,
+  "obs_mean": 9.975499593029014e-11,
+  "obs_std": 0.3099794387817383,
+  "obs_min": -0.9945614337921143,
+  "obs_max": 0.9945614337921143,
+  "mean_abs_step": 0.10686727613210678,
+  "persistence_mse": 0.02970590628683567,
+  "variance": 0.0949913039803505
+}

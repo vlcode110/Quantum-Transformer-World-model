@@ -1,0 +1,56 @@
+{
+  "phase1_root": "../Phase_1_Scaffold_test",
+  "data_dir": "data",
+  "run_dir": "runs",
+  "n_spins": 4,
+  "coupling": 1.0,
+  "field_levels": [
+    0.2,
+    0.6,
+    1.0,
+    1.4,
+    1.8
+  ],
+  "dt": 0.35,
+  "observables": "z",
+  "n_trajectories": 300,
+  "traj_length": 60,
+  "control_mode": "piecewise",
+  "hold_steps": 5,
+  "init_state": "neel",
+  "context": 8,
+  "n_qubits": 6,
+  "q_layers": 4,
+  "encoding": "angle_reupload",
+  "readout": "local",
+  "entangler": "brickwork",
+  "d_model": 8,
+  "n_heads": 2,
+  "n_layers": 2,
+  "quantum_layer_position": -1,
+  "action_conditioning": "token",
+  "models": [
+    "classical_transformer"
+  ],
+  "epochs": 20,
+  "batch_size": 64,
+  "lr": 0.001,
+  "grad_clip": 1.0,
+  "early_stop_patience": 8,
+  "seed": 2,
+  "device": "cpu",
+  "rollout_horizons": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "split_fracs": [
+    0.7,
+    0.15,
+    0.15
+  ],
+  "fixed_split": true,
+  "log_grad_var": true,
+  "grad_var_every": 50
+}

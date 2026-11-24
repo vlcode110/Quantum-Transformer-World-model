@@ -1,0 +1,6074 @@
+{
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 227.94,
+  "std": 77.96112107967663,
+  "sem": 11.025367476868968,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 0,
+  "previous_5_episode": 216.2
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed1": {
+  "mean": 365.86,
+  "std": 100.54332598437354,
+  "sem": 14.218973521320027,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 1,
+  "previous_5_episode": 371.45
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed2": {
+  "mean": 151.24,
+  "std": 60.57410667933948,
+  "sem": 8.566472319455658,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 2,
+  "previous_5_episode": 136.9
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed3": {
+  "mean": 463.42,
+  "std": 90.42435291446657,
+  "sem": 12.787934626044972,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 3,
+  "previous_5_episode": 467.55
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed4": {
+  "mean": 198.68,
+  "std": 69.04996451845577,
+  "sem": 9.765139630338114,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 4,
+  "previous_5_episode": 184.6
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed5": {
+  "mean": 445.26,
+  "std": 99.87027786083304,
+  "sem": 14.123790142875954,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 5,
+  "previous_5_episode": 377.15
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_seed0": {
+  "mean": 490.56,
+  "std": 40.88381586887407,
+  "sem": 5.781844688332607,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 0,
+  "previous_5_episode": 442.65
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_seed1": {
+  "mean": 289.84,
+  "std": 105.50153742955597,
+  "sem": 14.920170508409077,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 1,
+  "previous_5_episode": 317.0
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_seed2": {
+  "mean": 253.24,
+  "std": 122.26177816472327,
+  "sem": 17.290426484040236,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 2,
+  "previous_5_episode": 259.7
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_seed3": {
+  "mean": 494.42,
+  "std": 28.59306909025333,
+  "sem": 4.043670609730719,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 3,
+  "previous_5_episode": 500.0
+ },
+ "cartpole_classical_ctrl_full_b8x16h10_seed4": {
+  "mean": 113.0,
+  "std": 23.13352545549424,
+  "sem": 3.2715745444663185,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 4,
+  "previous_5_episode": 112.6
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 101.52,
+  "std": 64.92310528617682,
+  "sem": 9.181513600708763,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 0,
+  "previous_5_episode": 90.25
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed1": {
+  "mean": 280.98,
+  "std": 184.30924990352491,
+  "sem": 26.065264088437697,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 1,
+  "previous_5_episode": 297.35
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed2": {
+  "mean": 476.16,
+  "std": 58.77800949334709,
+  "sem": 8.312465819478598,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 2,
+  "previous_5_episode": 457.55
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed3": {
+  "mean": 203.16,
+  "std": 47.82608493280628,
+  "sem": 6.763629794718217,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 3,
+  "previous_5_episode": 204.7
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed4": {
+  "mean": 161.46,
+  "std": 100.55549910372878,
+  "sem": 14.220695060368884,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 4,
+  "previous_5_episode": 121.05
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed5": {
+  "mean": 146.54,
+  "std": 28.704849764456178,
+  "sem": 4.059478784277607,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 5,
+  "previous_5_episode": 140.75
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed6": {
+  "mean": 216.86,
+  "std": 101.80766375867782,
+  "sem": 14.3977778841042,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 6,
+  "previous_5_episode": 237.9
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed7": {
+  "mean": 93.72,
+  "std": 32.09176841496897,
+  "sem": 4.538461413298563,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 7,
+  "previous_5_episode": 91.55
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_ph64_entbrickwork_rolocal_encangle_reupload_seed6": {
+  "mean": 405.0,
+  "std": 124.5401140195399,
+  "sem": 17.612631830592495,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 6,
+  "previous_5_episode": 404.5
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_s80000_ph64_entbrickwork_rolocal_encangle_reupload_seed7": {
+  "mean": 238.06,
+  "std": 90.30933728026133,
+  "sem": 12.771668959067172,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    85494
+   ]
+  ],
+  "prior_params": 85494,
+  "arch": "transformer",
+  "arm": "classical",
+  "seed": 7,
+  "previous_5_episode": 227.5
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed0": {
+  "mean": 260.44,
+  "std": 178.16836531775218,
+  "sem": 25.19681186182093,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 0,
+  "previous_5_episode": 275.4
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed1": {
+  "mean": 241.84,
+  "std": 33.071655537635245,
+  "sem": 4.677038379145503,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 1,
+  "previous_5_episode": 260.75
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed2": {
+  "mean": 73.94,
+  "std": 26.460090702792385,
+  "sem": 3.742021913351123,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 2,
+  "previous_5_episode": 79.0
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed3": {
+  "mean": 337.7,
+  "std": 123.50372464019051,
+  "sem": 17.466064238974962,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 3,
+  "previous_5_episode": 332.65
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed4": {
+  "mean": 113.44,
+  "std": 33.97125844004017,
+  "sem": 4.804261441678627,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 4,
+  "previous_5_episode": 108.6
+ },
+ "cartpole_classical_ctrl_po_b8x16h10_seed5": {
+  "mean": 147.56,
+  "std": 97.15701930380533,
+  "sem": 13.74007743791861,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18672
+   ]
+  ],
+  "prior_params": 18672,
+  "arch": "mlp",
+  "arm": "classical",
+  "seed": 5,
+  "previous_5_episode": 132.95
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_entnone_seed0": {
+  "mean": 203.0,
+  "std": 57.473472141501944,
+  "sem": 8.12797637791843,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "none"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 207.8
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_entnone_seed1": {
+  "mean": 135.36,
+  "std": 41.441891848707876,
+  "sem": 5.8607685502841695,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "none"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 139.2
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h16_seed0": {
+  "mean": 158.38,
+  "std": 29.914471414350615,
+  "sem": 4.23054511853969,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    16
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    6034
+   ]
+  ],
+  "prior_params": 6034,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 162.7
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h16_seed1": {
+  "mean": 131.14,
+  "std": 31.01097225176921,
+  "sem": 4.385613754082773,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    16
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    6034
+   ]
+  ],
+  "prior_params": 6034,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 124.2
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h4_seed0": {
+  "mean": 148.24,
+  "std": 56.911707055754356,
+  "sem": 8.048530797605236,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    4
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    2878
+   ]
+  ],
+  "prior_params": 2878,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 150.55
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h4_seed1": {
+  "mean": 226.74,
+  "std": 69.73315137006215,
+  "sem": 9.861756841455787,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    4
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    2878
+   ]
+  ],
+  "prior_params": 2878,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 236.4
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h8_seed0": {
+  "mean": 113.18,
+  "std": 27.77170502507903,
+  "sem": 3.9275121896691796,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    8
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    3930
+   ]
+  ],
+  "prior_params": 3930,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 112.25
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_h8_seed1": {
+  "mean": 278.24,
+  "std": 98.04235003303418,
+  "sem": 13.86528211036472,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    8
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    3930
+   ]
+  ],
+  "prior_params": 3930,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 280.35
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s2500_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 55.76,
+  "std": 16.384822244992467,
+  "sem": 2.317163783594073,
+  "episodes": 50,
+  "step": 2500,
+  "target_steps": 2500,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 61.95
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s2500_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 55.5,
+  "std": 29.424649530623128,
+  "sem": 4.161273843428235,
+  "episodes": 50,
+  "step": 2500,
+  "target_steps": 2500,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 52.45
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 490.18,
+  "std": 59.90715816995495,
+  "sem": 8.472151556718044,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 481.05
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed1": {
+  "mean": 450.16,
+  "std": 100.27748700481081,
+  "sem": 14.181378212289523,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 498.2
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed2": {
+  "mean": 197.24,
+  "std": 72.26688314850725,
+  "sem": 10.220080625905062,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 2,
+  "previous_5_episode": 217.85
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed3": {
+  "mean": 392.36,
+  "std": 135.26474189529213,
+  "sem": 19.129323249921832,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 3,
+  "previous_5_episode": 371.95
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed4": {
+  "mean": 219.66,
+  "std": 39.36374474056044,
+  "sem": 5.566874167789316,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 4,
+  "previous_5_episode": 211.85
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed5": {
+  "mean": 225.48,
+  "std": 107.8466021717884,
+  "sem": 15.251812744719885,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 5,
+  "previous_5_episode": 187.0
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 245.78,
+  "std": 54.92186814011337,
+  "sem": 7.767125079461511,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 257.45
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_s80000_ph64_entbrickwork_rolocal_encangle_reupload_seed1": {
+  "mean": 183.04,
+  "std": 47.53775762486068,
+  "sem": 6.722854155788299,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 186.55
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_seed0": {
+  "mean": 214.28,
+  "std": 70.31985210450887,
+  "sem": 9.944728855026666,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 202.5
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_seed1": {
+  "mean": 132.48,
+  "std": 30.061430438354062,
+  "sem": 4.251328263025569,
+  "episodes": 50,
+  "step": 40000,
+  "target_steps": 40000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 132.6
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_seed2": {
+  "mean": 236.06,
+  "std": 44.64007616480957,
+  "sem": 6.3130601137641635,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 2,
+  "previous_5_episode": 211.8
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_seed3": {
+  "mean": 187.3,
+  "std": 49.98209679475242,
+  "sem": 7.068535916298368,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 3,
+  "previous_5_episode": 184.1
+ },
+ "cartpole_quantum_q6L4_full_b8x16h10_seed4": {
+  "mean": 178.64,
+  "std": 70.46041725678326,
+  "sem": 9.964607769501015,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    false
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 4,
+  "previous_5_episode": 148.1
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed0": {
+  "mean": 395.02,
+  "std": 161.02900235671834,
+  "sem": 22.772939906828015,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 408.9
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed1": {
+  "mean": 395.62,
+  "std": 118.35081579777977,
+  "sem": 16.73733288191401,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 379.25
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed2": {
+  "mean": 464.66,
+  "std": 106.87780124983858,
+  "sem": 15.114803604413785,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 2,
+  "previous_5_episode": 450.6
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed3": {
+  "mean": 315.64,
+  "std": 55.458726995848004,
+  "sem": 7.843048386947514,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 3,
+  "previous_5_episode": 307.35
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed4": {
+  "mean": 332.02,
+  "std": 192.501063893164,
+  "sem": 27.223761532896223,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 4,
+  "previous_5_episode": 339.85
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed5": {
+  "mean": 316.04,
+  "std": 146.42185082835144,
+  "sem": 20.70717672692248,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 5,
+  "previous_5_episode": 251.5
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed6": {
+  "mean": 139.44,
+  "std": 54.98296463451202,
+  "sem": 7.775765428560715,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 6,
+  "previous_5_episode": 147.3
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_archtransformer_K4_dm64_nh4_nl2_qp1_ph64_entbrickwork_rolocal_encangle_reupload_seed7": {
+  "mean": 429.54,
+  "std": 91.9073903448466,
+  "sem": 12.997667790800012,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    4
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 7,
+  "previous_5_episode": 444.15
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_s80000_ph64_entbrickwork_rolocal_encangle_reupload_seed7": {
+  "mean": 183.14,
+  "std": 79.79148074826034,
+  "sem": 11.28421942360215,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    84770
+   ]
+  ],
+  "prior_params": 84770,
+  "arch": "transformer",
+  "arm": "quantum",
+  "seed": 7,
+  "previous_5_episode": 187.5
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed0": {
+  "mean": 407.56,
+  "std": 97.76076104450088,
+  "sem": 13.825459413704849,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 0,
+  "previous_5_episode": 354.2
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed1": {
+  "mean": 485.64,
+  "std": 54.38593935936016,
+  "sem": 7.691333304440785,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 1,
+  "previous_5_episode": 500.0
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed2": {
+  "mean": 385.08,
+  "std": 180.36150808861626,
+  "sem": 25.50696908689858,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 2,
+  "previous_5_episode": 295.75
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed3": {
+  "mean": 159.8,
+  "std": 47.316804625840916,
+  "sem": 6.691606683002222,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 3,
+  "previous_5_episode": 158.3
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed4": {
+  "mean": 355.14,
+  "std": 169.056323158881,
+  "sem": 23.90817450162183,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 4,
+  "previous_5_episode": 389.05
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed5": {
+  "mean": 236.58,
+  "std": 90.00690862372733,
+  "sem": 12.728899088295107,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 5,
+  "previous_5_episode": 214.95
+ },
+ "cartpole_quantum_q6L4_po_b8x16h10_seed6": {
+  "mean": 74.26,
+  "std": 19.726946038350693,
+  "sem": 2.7898114631637747,
+  "episodes": 50,
+  "step": 80000,
+  "target_steps": 80000,
+  "complete": true,
+  "condition": [
+   [
+    "task",
+    "cartpole"
+   ],
+   [
+    "partial_obs",
+    true
+   ],
+   [
+    "prior_arch",
+    "transformer"
+   ],
+   [
+    "prior_context",
+    8
+   ],
+   [
+    "d_model",
+    64
+   ],
+   [
+    "n_heads",
+    4
+   ],
+   [
+    "n_layers",
+    2
+   ],
+   [
+    "quantum_layer_position",
+    1
+   ],
+   [
+    "prior_hidden",
+    64
+   ],
+   [
+    "n_qubits",
+    6
+   ],
+   [
+    "q_layers",
+    4
+   ],
+   [
+    "entangler",
+    "brickwork"
+   ],
+   [
+    "readout",
+    "local"
+   ],
+   [
+    "encoding",
+    "angle_reupload"
+   ],
+   [
+    "batch_size",
+    8
+   ],
+   [
+    "seq_len",
+    16
+   ],
+   [
+    "horizon",
+    10
+   ],
+   [
+    "train_every",
+    4
+   ],
+   [
+    "prior_params",
+    18658
+   ]
+  ],
+  "prior_params": 18658,
+  "arch": "mlp",
+  "arm": "quantum",
+  "seed": 6,
+  "previous_5_episode": 70.7
+ }
+}

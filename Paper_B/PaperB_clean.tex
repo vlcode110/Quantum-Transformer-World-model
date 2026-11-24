@@ -1,0 +1,1032 @@
+% =====================================================================
+%  A Quantum Transformer World Model for Model-Based Reinforcement
+%  Learning
+%  V. Liutarevich
+%
+%  Draft v3 --- restructured 12 October 2026.
+%
+%  WHAT CHANGED FROM v2, AND WHY
+%  -----------------------------
+%  v2 led with a closed-loop result: under partial observation the
+%  quantum agent led the classical control by 178.3 return points and was
+%  ahead in three of three seeds. That claim is withdrawn. At seven
+%  completed seeds the difference is +58.3 with a 95% interval of
+%  [-111.9, +212.5] and an exact permutation p of 0.500. The dispersion
+%  grew faster than the effect (sd 117 at three seeds, 237 at seven), so
+%  detecting a difference of this size at 80% power would require roughly
+%  130 seeds at 27 h each. CartPole returns cannot carry this paper.
+%
+%  The paper therefore now rests on:
+%    (1) the architecture, which is the actual contribution;
+%    (2) offline predictive performance, where a seed costs ~30 min
+%        rather than 27 h, so eight seeds and a context ablation are
+%        affordable;
+%    (3) closed-loop viability reported honestly as parity;
+%    (4) hardware execution.
+%
+%  Two corrections of record are marked in the text: the v2 imagination
+%  table was computed before the symlog fix and is superseded, and the
+%  v2 full-observation table contained two runs destroyed by a tag
+%  collision.
+%
+%  PLACEHOLDERS
+%  ------------
+%     \pend{...}        inline, for a missing number or citation
+%     \pendpara{...}    a paragraph-sized gap
+%     pendingbox env    a whole section awaiting an experiment
+%
+%  \draftfalse hides every one of them, which is also how to see what
+%  the paper looks like with the gaps removed. Appendix A lists them.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage[colorlinks=true,linkcolor=NavyBlue,citecolor=NavyBlue,
+            urlcolor=NavyBlue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\definecolor{NavyBlue}{HTML}{1F3864}
+\definecolor{PendBG}{HTML}{FFF4E5}
+\definecolor{PendFG}{HTML}{8A4B00}
+
+% ---- placeholder machinery -------------------------------------------
+\newif\ifdraft
+\draftfalse                    % \draftfalse to hide every placeholder
+
+\newcommand{\pend}[1]{%
+  \ifdraft\textcolor{PendFG}{\textbf{[TODO:} \textit{#1}\textbf{]}}\fi}
+
+\newcommand{\pendpara}[1]{%
+  \ifdraft\par\vspace{2pt}\noindent
+  \fcolorbox{PendFG}{PendBG}{%
+    \begin{minipage}{0.97\linewidth}\small\textcolor{PendFG}{%
+      \textbf{TO DO.} #1}\end{minipage}}\par\vspace{4pt}\fi}
+
+% A named savebox rather than LaTeX's internal \@tempboxa, so the
+% definition needs no \makeatletter and cannot clash with anything else.
+\newsavebox{\pendbox}
+\newenvironment{pendingbox}[1]
+  {\par\vspace{3pt}\noindent
+   \begin{lrbox}{\pendbox}\begin{minipage}{0.93\linewidth}\small
+   \textcolor{PendFG}{\textbf{SECTION PENDING --- #1}}\par\vspace{3pt}
+   \color{PendFG}}
+  {\end{minipage}\end{lrbox}%
+   \ifdraft\fcolorbox{PendFG}{PendBG}{\usebox{\pendbox}}\fi
+   \par\vspace{4pt}}
+
+\title{\bfseries A Quantum Transformer World Model for\\
+       Model-Based Reinforcement Learning}
+\author{V. Liutarevich}
+\date{Draft v3 --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Quantum reinforcement learning has so far placed parameterised quantum
+circuits in the policy or the value function. We place one in the
+\emph{world model}, which we argue is the better-motivated target: a
+world model predicts dynamics, and dynamics is what quantum systems
+natively express.
+
+We present, to our knowledge, the first \emph{quantum transformer world
+model}: a transformer over a window of recent latent states, with a
+parameterised quantum circuit as the token-mixing block of one encoder
+layer, serving as the dynamics prior of a recurrent state-space model
+and trained end to end inside a model-based agent. Because latent
+imagination rolls the model forward on the prior alone, with no access
+to observations, \textbf{the policy is trained entirely on trajectories
+generated through a quantum circuit.}
+
+Our primary evidence is offline: on held-out latent trajectories the
+quantum transformer matches its capacity-matched classical twin at
+one-step prediction and stays within the pre-registered factor of two at
+ten-step open-loop rollout, over eight seeds.
+\pend{replace with the measured figures from the width-matched context
+sweep; see Section~\ref{sec:offline}}
+Closed-loop, the architecture trains a competent policy and returns are
+at parity; we report the dispersion that makes any stronger closed-loop
+claim unattainable at this scale, and quantify it rather than assert it.
+Measured directly, the quantum prior is the \emph{better} open-loop
+dynamics model under partial observation, by $26\%$. Both circuits were
+executed on IonQ Forte-1.
+
+We make no claim of quantum advantage, and explain why none is available
+at simulable scale.
+\end{abstract}
+
+% =====================================================================
+\section{Introduction}
+% =====================================================================
+Reinforcement learning with quantum components has, to date, been almost
+entirely model-free. Parameterised quantum circuits (PQCs) have been
+used as policies and as value-function approximators, inheriting the
+sample inefficiency of the model-free setting while adding the cost of
+circuit evaluation.
+
+Model-based reinforcement learning offers a different and, we argue,
+better insertion point. A model-based agent learns a \emph{world
+model} --- a predictive model of environment dynamics --- and optimises
+its policy against that model rather than against the environment. The
+world model is the component whose job is to represent dynamics, which
+is what a quantum system does naturally.
+
+This paper places a quantum transformer inside the world model of a
+model-based agent and trains the whole system end to end. The
+construction has two parts that are usually studied separately. From the
+quantum sequence-modelling literature we take the idea of a transformer
+in which one encoder layer's token-mixing block is a
+PQC~\cite{qasa}. From the model-based RL literature we take the
+recurrent state-space model (RSSM) of the DreamerV3
+family~\cite{hafner2023}. We join them by making the quantum
+transformer the RSSM's \textbf{prior}: the distribution over the next
+stochastic latent given the recurrent state.
+
+That join is the contribution. In latent imagination the agent rolls the
+model forward using the prior alone, without observations, and trains
+its policy on the resulting trajectories. Replacing the prior therefore
+means the agent's imagined experience --- all of the data its policy
+ever sees during optimisation --- is generated through a quantum
+circuit. No prior work we are aware of puts a quantum model in that
+position.
+
+\paragraph{Why the evidence is where it is.}
+A reader may expect the headline result of a paper like this to be a
+closed-loop learning curve showing the quantum agent ahead. We do not
+offer one, and the reason is quantitative rather than rhetorical. Over
+seven completed seeds the paired closed-loop difference on partial-observation
+CartPole is $+58.3$ return points with a standard deviation of $237$;
+detecting an effect of that size at $80\%$ power needs on the order of
+$130$ seeds, and a seed costs $27$ hours. Offline prediction error on
+the same latent dynamics has a seed cost of about half an hour. We
+therefore place the quantitative claims where the measurements can
+actually be made, and report the closed-loop behaviour as what it
+is: evidence that the architecture works, at parity, with the power
+limitation stated.
+
+\paragraph{Contributions.}
+\begin{enumerate}\itemsep2pt
+\item A quantum transformer dynamics prior for recurrent state-space
+      models, and the first model-based agent whose world model is a
+      quantum transformer, trained end to end
+      (Section~\ref{sec:arch}).
+\item An account of what the integration requires: a bounded history
+      window with correct reset semantics across sequence, rollout and
+      episode boundaries; mapping circuit readouts to categorical latent
+      logits; maintaining gradient flow through multi-step imagination;
+      and the interaction with KL balancing
+      (Sections~\ref{sec:arch}--\ref{sec:impl}).
+\item A verification harness targeting failure modes that are silent
+      rather than loud, with the specific checks enumerated
+      (Section~\ref{sec:impl}).
+\item Offline predictive performance over eight seeds, with a
+      width-matched ablation over attention context length
+      (Section~\ref{sec:offline}).
+\item A direct measurement of world-model quality showing that agent
+      performance is only weakly coupled to it, and that the direction of
+      the quality difference depends on observability
+      (Section~\ref{sec:imagination}).
+\item Execution of both circuits on trapped-ion hardware, with the
+      measurement convention settled empirically rather than assumed
+      (Section~\ref{sec:hardware}).
+\end{enumerate}
+
+We make no general claim of advantage. At the scale accessible to exact
+simulation the circuit computes a truncated Fourier series whose
+frequency support is fixed by the encoding~\cite{schuld2021}, and a
+classical surrogate spanning the same spectrum reaches the same error
+with far fewer parameters~\cite{papera}. Parity is the honest
+expectation, and parity is what we find.
+
+% =====================================================================
+\section{Background: recurrent state-space models}
+% =====================================================================
+A model-based agent of the DreamerV3 family~\cite{hafner2023} maintains
+a latent state factorised into a deterministic recurrent component
+$h_t$ and a stochastic component $z_t$ represented as categorical
+variables. Three distributions define the world model: a recurrent
+update $h_t = f(h_{t-1}, z_{t-1}, a_{t-1})$; a \emph{posterior}
+$q(z_t \mid h_t, o_t)$, which sees the observation; and a \emph{prior}
+$p(z_t \mid h_t)$, which does not. Training reconstructs observations
+and rewards while keeping the prior close to the posterior under a
+balanced KL term.
+
+\paragraph{Imagination.} Policy optimisation does not interact with the
+environment. The agent samples a starting latent from replayed
+experience and rolls the world model forward for a fixed horizon using
+\emph{the prior only}, since no future observations exist. Actor and
+critic are trained on these imagined trajectories via
+$\lambda$-returns.
+
+The prior is therefore the generative core of the agent: it is what the
+agent dreams with, and the most consequential place to introduce a
+quantum component.
+
+\paragraph{Why a transformer prior is not redundant.}
+The RSSM already has a recurrent pathway, so one might ask what
+attention adds. The answer is that $h_t$ is a \emph{summary} produced by
+a GRU trained under the world-model loss, and the prior sees only its
+current value. A prior that attends over $h_{t-K+1}, \dots, h_t$ can
+condition on the recent trajectory of the recurrent state rather than
+its instantaneous value, which matters precisely when the dynamics are
+history-dependent. This is the same argument that motivates
+TransDreamer~\cite{transdreamer}, applied to the prior alone rather
+than to the whole recurrent backbone --- a deliberately smaller
+intervention, so that the comparison against the baseline isolates one
+module.
+
+% =====================================================================
+\section{Related work}
+% =====================================================================
+\paragraph{Quantum reinforcement learning.} Existing work places
+parameterised quantum circuits in the policy or value
+function~\cite{chen2020,skolik2023}. To our knowledge no prior work
+places a quantum circuit in the dynamics model of a model-based agent.
+\pend{the systematic novelty search has been completed; record the
+search strings, databases and dates in Appendix~\ref{app:novelty}}
+
+\paragraph{World models for quantum problems.} The converse direction
+exists: model-based reinforcement learning applied \emph{to} quantum
+problems, for instance DreamQAS~\cite{dreamqas}, which learns a
+classical world model over circuit-construction trajectories. That work
+uses a classical model to design quantum circuits; we use a quantum
+circuit inside a model.
+
+\paragraph{Quantum attention.} QASA~\cite{qasa} introduces the
+construction our prior adapts: a transformer encoder in which one
+layer's token mixing is performed by a PQC. Their reported gain is, in
+the revised version, attributed to the low-rank bottleneck the circuit
+imposes rather than to quantumness as such --- a distinction we take
+seriously, and which motivates the head-width ablation of
+Section~\ref{sec:ablation}.
+
+\paragraph{Transformers as world models.} TransDreamer~\cite{transdreamer}
+replaces Dreamer's recurrent backbone with a transformer state-space
+model. We leave the backbone intact and make only the prior a
+transformer, which keeps every other component byte-identical to the
+validated baseline.
+
+\paragraph{Expressivity and benchmarking.} Data re-uploading circuits of
+the kind we use compute truncated Fourier series in their inputs, with
+frequencies fixed by the encoding gates and only the coefficients
+trainable~\cite{schuld2021}. This bounds what the circuit can represent
+and predicts that a classical model spanning the same frequency support
+should match it; we confirm this directly in the companion
+paper~\cite{papera}. Bowles et al.~\cite{bowles2024} find that quantum
+models at simulable scale generally match rather than exceed classical
+baselines of comparable capacity, and report that removing entanglement
+often leaves performance unchanged --- which informs both our
+expectations and our choice of controls.
+
+% =====================================================================
+\section{Architecture}\label{sec:arch}
+% =====================================================================
+\subsection{The quantum transformer prior}
+In the baseline RSSM the prior is a multilayer perceptron mapping the
+deterministic recurrent state to logits over the categorical stochastic
+latent,
+\[
+  \text{logits} = \mathrm{MLP}(h_t) \in \mathbb{R}^{S \times C},
+  \qquad p(z_t \mid h_t) = \mathrm{Categorical}(\text{logits}),
+\]
+for $S$ stochastic variables with $C$ classes each. We replace this map
+with a quantum transformer over a bounded window of recent recurrent
+states. Writing $H_t = (h_{t-K+1}, \dots, h_t)$ for the window, the
+prior computes
+\[
+  \text{logits} = W_{\text{out}}\,
+    \mathrm{Enc}_{\text{quantum}}\!\big(\mathrm{LN}(W_{\text{in}} H_t)
+      + \mathrm{PE}\big)_{[-1]},
+\]
+where the final token's representation is read out, $\mathrm{PE}$ is
+sinusoidal positional encoding, and $\mathrm{Enc}_{\text{quantum}}$ is a
+two-block transformer encoder in which block $1$ carries the PQC. The
+interface $h_t \mapsto \text{logits}$ is preserved exactly, so every
+other component --- recurrent update, posterior, decoders, actor,
+critic, KL balancing, the imagination loop --- is unchanged.
+
+Each encoder block applies causally-masked multi-head self-attention,
+then (in the quantum block) the circuit as a residual token-mixing
+sublayer, then a position-wise feed-forward network, each with layer
+normalisation:
+\begin{align*}
+  u &= \mathrm{LN}_1\big(x + \mathrm{MHA}(x, x, x)\big), \\
+  v &= \mathrm{LN}_2\big(u + \mathrm{QuantumToken}(u)\big), \\
+  y &= \mathrm{LN}_3\big(v + \mathrm{FFN}(v)\big).
+\end{align*}
+$\mathrm{QuantumToken}$ acts on each sequence position independently:
+project $d_{\text{model}} \to n$ rotation angles via a linear map,
+$\tanh$ and scaling by $\pi$; evaluate the circuit; project the
+$n$ readouts back to $d_{\text{model}}$.
+
+\begin{table}[h]\centering\small
+\caption{The dynamics prior. The window length $K$ is the attention
+context; $K = 4$ is used for all closed-loop runs.}
+\label{tab:arch}
+\begin{tabular}{lll}
+\toprule
+& Quantum transformer prior & Classical twin \\
+\midrule
+Attention context $K$        & 4                 & 4 \\
+$d_{\text{model}}$           & 64                & 64 \\
+Attention heads              & 4                 & 4 \\
+Encoder blocks               & 2                 & 2 \\
+Token-mixing block index     & 1                 & 1 \\
+Token-mixing map             & PQC, 6 qubits     & $\tanh$ MLP, width 6 \\
+Data qubits $+$ ancilla      & $6 + 1$           & --- \\
+Circuit layers $L$           & 4                 & --- \\
+Encoding                     & angle, re-uploaded & --- \\
+Entangler                    & brickwork         & --- \\
+Readout                      & local Pauli-$Z$   & --- \\
+\midrule
+Trainable circuit parameters & $L \times (n+1) = 28$ & 0 \\
+Total prior parameters       & 84{,}770          & \pend{count} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The window, and why it is the fragile part}
+The prior is called once per RSSM step by code that knows nothing about
+attention, so the window is maintained as mutable state on the module
+and advanced on each call. This is the component most likely to be
+wrong in a way that produces a plausible result rather than an error. A
+window that is not cleared at an episode boundary lets one episode
+attend over the tail of the previous one; a window that is not cleared
+between imagination rollouts lets imagined futures attend over replayed
+history. Either leak would inflate apparent performance silently.
+
+We therefore install the reset logic by wrapping the three entry points
+at which a boundary occurs --- sequence start in \texttt{observe},
+per-step reset in \texttt{obs\_step}, and rollout start in
+\texttt{imagine} --- on the agent instance, leaving the baseline
+implementation untouched. The semantics are asserted by test, not
+assumed; see Section~\ref{sec:impl}.
+
+\subsection{The bottleneck, and an honest accounting}
+The circuit is $28$ of the prior's $84{,}770$ parameters: $0.03\%$. We
+state this because it bounds what the architecture can be claimed to
+demonstrate.
+
+The defensible claim is one of \emph{information bottleneck} rather than
+parameter share: in the quantum block, every token's representation is
+routed through $n = 6$ real numbers produced by a quantum circuit, and
+the surrounding layers cannot route around it, because the sublayer is
+on the residual path of the only block that mixes tokens that way.
+Whether the circuit or the surrounding width carries the predictive work
+is an empirical question, and we answer it in
+Section~\ref{sec:ablation} rather than assuming the favourable answer.
+
+For comparison, the earlier non-attentional prior --- retained as the
+\texttt{mlp} ablation arm, and the configuration used for all seven
+partial-observation seeds in Section~\ref{sec:closedloop} --- had the
+following breakdown.
+
+\begin{table}[h]\centering\small
+\caption{Parameter breakdown of the non-attentional (\texttt{mlp})
+prior, retained as an ablation arm.}
+\begin{tabular}{lr}
+\toprule
+Component & Parameters \\
+\midrule
+Down-projection ($256 \rightarrow 6$) & 1{,}542 \\
+\textbf{Quantum circuit} & \textbf{28} \\
+Expansion head ($6 \rightarrow 64 \rightarrow 256$) & 17{,}088 \\
+\midrule
+Total, quantum prior & 18{,}658 \\
+Classical control, same positions & 18{,}672 \\
+Original DreamerV3 prior (replaced by both) & 131{,}840 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Why the prior}
+Three positions could host a quantum circuit: the policy, the value
+function, or the world model. The first two are what the literature has
+used. We take the world model because it is the component that models
+dynamics; because the policy trains entirely on imagined rollouts, so
+the prior has the greatest leverage over final performance; and because
+it is the smallest intervention with the largest reach.
+
+\subsection{The classical control}
+To isolate the quantum substrate from the architectural change
+accompanying it, the control is the identical transformer with the PQC
+sublayer replaced by a $\tanh$ MLP of the same bottleneck width,
+occupying the same position in the same block. Everything else ---
+attention, positional encoding, layer norms, feed-forward network,
+window semantics, context length --- is shared code. The arms are
+required to match within $15\%$ on parameter count, and the test suite
+fails if they do not.
+
+This follows the capacity-matched protocol of~\cite{qasa}. Both arms
+have a narrower bottleneck at that position than DreamerV3's original
+prior, which is a property of the comparison to keep in view: we are
+comparing two bottlenecked priors to each other, not either to a
+full-width baseline.
+
+% =====================================================================
+\section{Implementation and verification}\label{sec:impl}
+% =====================================================================
+Four aspects of the integration proved non-obvious.
+
+\paragraph{Optimiser reconstruction.} The prior is installed by
+substituting a module within an already-constructed agent. An optimiser
+built before the substitution holds references to the \emph{replaced}
+parameters; the circuit parameters are then silently untracked, and
+training proceeds without error while the quantum component never
+updates. The optimiser must be rebuilt after substitution. This failure
+is silent and produces plausible learning curves.
+
+\paragraph{Gradient flow through imagination.} The actor is trained on
+trajectories produced by rolling the prior forward for $H$ steps, so
+gradients reach the circuit through a composition of $H$ applications of
+the same circuit. We instrument and report gradient magnitudes at the
+circuit parameters separately from the surrounding classical ones.
+
+\paragraph{Window reset semantics.} Discussed in
+Section~\ref{sec:arch}. The non-obvious cases are a batch-size change
+between the observation and imagination phases, which must re-seed
+rather than reuse the window, and a partial reset in which only some
+rows of the batch have hit an episode boundary.
+
+\paragraph{KL balancing.} The world-model loss regularises the prior
+toward the posterior with asymmetric weighting. A prior with a
+materially different parameterisation changes the effective strength of
+this term.
+\pend{report KL trajectories for both arms}
+
+\paragraph{Verification harness.} Nine checks must pass before any
+training run, for both arms:
+
+\begin{enumerate}\itemsep1pt
+\item Output shape and finiteness of the logits.
+\item The window is bounded at $K$ after more than $K$ calls.
+\item History changes the prediction --- otherwise the attention is
+      decorative.
+\item \texttt{reset()} fully clears, so two fresh sequences agree
+      exactly.
+\item Residual nondeterminism in training mode is attributable to
+      attention dropout and not to retained state: the module is
+      verified stochastic under \texttt{train()} and deterministic under
+      \texttt{eval()}.
+\item \texttt{reset\_rows()} is selective and complete --- flagged rows
+      cleared, unflagged rows bit-identical.
+\item A batch-size change re-seeds the window rather than reusing it.
+\item Gradients reach the circuit parameters specifically, with non-zero
+      magnitude, not merely the surrounding layers.
+\item The two arms are capacity-matched within tolerance.
+\end{enumerate}
+
+Checks 3 and 4 must run under \texttt{eval()}: with dropout active, two
+identical calls differ regardless of whether the window was cleared, so
+check 3 would pass on noise and check 4 would fail on a correct
+implementation. We record this because we made that error first, and it
+is the kind of test bug that produces false confidence in both
+directions at once.
+
+The motivation for the harness is that the failure modes here are
+silent: a missing gradient path, an untracked parameter group or a
+leaking window produces runs that complete normally and report
+plausible numbers.
+
+\paragraph{Run naming.} Every configuration setting appears
+unconditionally in the run directory name, and training refuses to write
+into a directory containing a completed run. This is a response to an
+incident rather than a precaution: an earlier scheme appended only
+non-default values, so a head-width ablation at the default width
+produced the same directory name as a headline run at a different step
+budget and overwrote two completed $80{,}000$-step runs. Both runs
+finished normally and left plausible result files behind, and the loss
+was invisible until the numbers were checked against their file
+timestamps.
+\pend{note in Section~\ref{sec:closedloop} which full-observation seeds
+are from the re-run}
+
+% =====================================================================
+\section{Offline predictive performance}\label{sec:offline}
+% =====================================================================
+The prior's job is to predict latent dynamics. We measure that directly
+and in isolation, on offline trajectories, before asking what it does
+inside an agent. This is where the statistical power is: a seed costs
+roughly half an hour rather than $27$ hours, so eight seeds and a
+context ablation are affordable.
+
+\paragraph{Setup.} Latent trajectories are collected from a trained
+DreamerV3 agent on CartPole under a mixed policy ($70\%$ greedy,
+$30\%$ $\epsilon$-random) to give the state coverage a dynamics model
+needs; a purely greedy policy yields a narrow on-policy manifold that
+flatters every model equally. Dreamer's $[h_t \mid z_t]$ features are
+compressed to six dimensions by an autoencoder, one feature per qubit
+under angle encoding, with held-out explained variance of approximately
+$91\%$. Splits are by episode, not by window, since windowing across a
+split boundary leaks future frames into training.
+
+Two metrics: one-step prediction error, and $k$-step \emph{open-loop}
+rollout error in which the model re-consumes its own predictions. The
+second is the regime a world model is actually used in; teacher-forced
+error looks far better and is not what the imagination loop does. The
+pre-registered gate is to match the capacity-matched classical twin at
+one step and stay within $2\times$ at ten steps.
+
+\begin{pendingbox}{headline offline table, eight seeds}
+Awaiting the width-matched sweep. Required here: one-step and $k$-step
+open-loop error for the quantum transformer and its classical twin at
+$k \in \{1, 5, 10, 20\}$, over eight seeds, with geometric-mean ratios,
+bootstrap intervals and exact permutation $p$-values on the paired
+log-ratios.
+
+The three-seed measurement at $K = 2$ gives a geometric-mean
+quantum/classical ratio of $0.983$ at one step and $0.983$ at ten
+steps --- parity --- with per-seed ratios spanning $0.81$ to $1.16$.
+That spread across three seeds is the reason this table needs eight.
+\end{pendingbox}
+
+\subsection{Attention context length}
+The architectural claim is that attending over recent recurrent states
+helps when the dynamics are history-dependent. That predicts a trend:
+the quantum/classical ratio, or at least the absolute error, should
+improve with $K$ and then saturate.
+
+\begin{pendingbox}{context ablation, $K \in \{2,4,8,16\}$ at fixed width}
+\textbf{Correction of record.} The context sweep initially present on
+disk is unusable: $K = 2$ was run at $d_{\text{model}} = 32$, $K = 4$ at
+$8$, and $K = 8$ at $6$. Context is confounded with width across those
+three points, so they cannot be compared and no trend can be read from
+them. The sweep is being re-run at a single fixed width
+($d_{\text{model}} = 32$, two blocks) over eight seeds.
+
+This is the same class of error as the run-naming incident of
+Section~\ref{sec:impl}: a setting varied without being recorded as
+varied. The run-naming fix prevents silent overwriting but not silent
+confounding, so the sweep driver now refuses to start when any
+result-affecting setting absent from the directory name differs from its
+default.
+\end{pendingbox}
+
+% =====================================================================
+\section{Closed-loop behaviour}\label{sec:closedloop}
+% =====================================================================
+\subsection{Setup}
+CartPole, with a reduced training configuration relative to DreamerV3's
+defaults: batch $8$ against $16$, sequence length $16$ against $32$,
+imagination horizon $10$ against $15$, and a gradient step every four
+environment steps rather than every two. The reduction is forced by the
+cost of circuit evaluation --- imagination performs \texttt{horizon}
+sequential circuit calls over $\texttt{batch} \times
+\texttt{seq\_len}$ states per gradient step --- and applies identically
+to both arms. The solved threshold is a mean evaluation return of $475$.
+
+Final returns are measured over $50$ evaluation episodes from the saved
+checkpoint, rather than the $20$-episode figure recorded during
+training. At $20$ episodes the standard error is large enough to move
+individual seeds by up to $90$ points, which is comparable to the
+differences being discussed.
+
+\paragraph{Reference implementation.} Full DreamerV3, at its own default
+settings, solves CartPole in all three seeds we ran, first crossing the
+threshold at $10{,}000$, $15{,}000$ and $45{,}000$ environment steps.
+Our reduced configuration therefore costs roughly a factor of two to
+eight in sample efficiency, which is the context for neither arm below
+reaching the gate at $80{,}000$ steps.
+
+\paragraph{Attention context.} All closed-loop runs use $K = 4$. At
+$K = 8$ the measured throughput is $0.4$ environment steps per second
+against $2.8$ at $K = 4$, a factor of seven, which is the difference
+between a $55$-hour run and an $8$-hour one.
+
+\subsection{The architecture trains}
+\begin{pendingbox}{quantum transformer closed-loop runs}
+The quantum transformer prior has been verified to train
+(all nine integration checks pass; a $2{,}500$-step run reaches a return
+of $62.0$ against a random-policy return of approximately $22$) but the
+full $80{,}000$-step runs have not yet been done. Five seeds per arm are
+in progress at $K = 4$.
+
+Required here: final returns per seed for both arms, learning curves
+with interquartile bands, and the gradient-magnitude trace at the
+circuit parameters.
+
+\textbf{This section must not be written as a comparison.} See
+Section~\ref{sec:power}: at the dispersion measured over seven seeds of
+the non-attentional prior, five seeds cannot resolve a difference of the
+size observed. The claim available from these runs is that the
+architecture trains a competent policy and that returns are at parity.
+\end{pendingbox}
+
+\subsection{The non-attentional prior, for reference}
+The seven-seed comparison below uses the \texttt{mlp} prior
+(Section~\ref{sec:arch}), which is the configuration for which we have
+the most seeds. It is reported because it is the dataset behind the
+power analysis of Section~\ref{sec:power}, not as a result about the
+paper's architecture.
+
+\begin{table}[h]\centering\small
+\caption{Final return at $80{,}000$ environment steps, $50$ evaluation
+episodes, non-attentional prior. Partial observation: both velocity
+components hidden, so the agent must infer velocity from history.}
+\label{tab:po}
+\begin{tabular}{lccc}
+\toprule
+Seed & Quantum & Classical & Difference \\
+\midrule
+0 & $369.7$ & $290.0$ & $+79.7$ \\
+1 & $497.6$ & $242.2$ & $+255.4$ \\
+2 & $386.8$ & $85.4$  & $+301.4$ \\
+3 & $152.9$ & $352.7$ & $-199.8$ \\
+4 & $328.7$ & $111.7$ & $+217.0$ \\
+5 & $233.6$ & $155.0$ & $+78.6$ \\
+6 & $70.9$  & $395.1$ & $-324.2$ \\
+\midrule
+Mean & $291.5$ & $233.2$ & $+58.3$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The paired difference is $+58.3$ with a $95\%$ bootstrap interval of
+$[-111.9, +212.5]$ and an exact permutation $p$ of $0.500$; the quantum
+arm is ahead in five of seven seeds. The interval contains zero. These
+data do not establish a difference in either direction.
+
+\begin{table}[h]\centering\small
+\caption{Final return at $80{,}000$ steps, full observation,
+non-attentional prior. Seeds $0$ and $1$ are from the re-run described
+in Section~\ref{sec:impl}.}
+\label{tab:full}
+\begin{tabular}{lccc}
+\toprule
+Seed & Quantum & Classical & Difference \\
+\midrule
+0 & $85.7$  & $474.8$ & $-389.1$ \\
+1 & $219.3$ & $302.2$ & $-82.9$ \\
+2 & $235.5$ & $245.7$ & $-10.2$ \\
+3 & $190.9$ & $483.0$ & $-292.1$ \\
+4 & $166.9$ & $111.7$ & $+55.2$ \\
+\midrule
+Mean & $179.7$ & $323.5$ & $-143.8$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The paired difference is $-143.8$, interval $[-293.9, +1.4]$,
+permutation $p = 0.188$, quantum ahead in one of five seeds. Again the
+interval contains zero, though only just.
+
+Full-state CartPole is Markovian --- the observation determines the next
+state --- so a history-dependent prior has little to contribute there,
+and the sign is in the direction the architecture would predict. We
+decline to make more of it than that, because neither comparison is
+resolved.
+
+\pendpara{\textbf{Unexplained discrepancy, to resolve before
+submission.} Full-observation seed $0$ returned $310.8$ in the original
+run and $85.7$ in the re-run, at nominally identical configuration and
+seed --- a factor of $3.6$. Seed $1$ moved from $247.7$ to $219.3$, a
+factor of $1.1$. One plausible cause is that the two runs differed in
+CPU thread count, which changes floating-point reduction order and so
+the trajectory of an otherwise deterministic optimisation; the re-runs
+were launched with \texttt{OMP\_NUM\_THREADS=1} and the originals may
+not have been. This must be checked and either explained or reported: if
+seed control does not survive a threading change, that is a
+reproducibility fact about this pipeline which belongs in the paper,
+and it bears on the companion paper's argument~\cite{papera}.}
+
+\subsection{Why no stronger closed-loop claim is available}
+\label{sec:power}
+The partial-observation difference was $+212.2$ at three seeds,
+$+122.1$ at six, and $+58.3$ at seven. The standard deviation of the
+paired difference moved the other way: $117$, $182$, $237$. Dispersion
+grew faster than the effect.
+
+\begin{table}[h]\centering\small
+\caption{The same comparison as seeds accumulate. $n_{80\%}$ is the
+seeds required to detect the then-current effect at $80\%$ power and
+$\alpha = 0.05$; $p_{\min}$ is the smallest two-sided $p$ attainable at
+that sample size under an exact sign-flip permutation test.}
+\begin{tabular}{lrrr}
+\toprule
+& 3 seeds & 6 seeds & 7 seeds \\
+\midrule
+Difference      & $+212.2$ & $+122.1$ & $+58.3$ \\
+Ahead in        & $3/3$    & $5/6$    & $5/7$ \\
+sd of difference& $117$    & $182$    & $237$ \\
+Exact $p$       & $0.250$  & $0.156$  & $0.500$ \\
+$p_{\min}$      & $0.250$  & $0.031$  & $0.016$ \\
+$n_{80\%}$      & $3$      & $18$     & $\sim\!130$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At three seeds the smallest attainable two-sided $p$ is $0.250$, so that
+configuration could not have reached significance whatever the data ---
+a point worth making explicitly, because a three-seed study reporting
+``ahead in all seeds'' invites a reading it cannot support. At $27$
+hours per run, $130$ seeds is roughly five months of continuous compute
+for one cell of one table.
+
+This is not a peculiarity of our setup. The companion
+paper~\cite{papera} measures seed dispersion across five sequence-modelling
+tasks and finds the required sample size for a $10\%$ effect spanning
+$6$ to $150$ depending on task, that under the paired null $29\%$ of
+five-seed studies report a spurious $\ge 10\%$ gain, and that a
+three-seed pilot cannot forecast its own required sample size: the same
+pilot data is consistent with $n$ between $4$ and $170$. We therefore
+treat the closed-loop comparison as a viability demonstration and put
+the quantitative weight on Section~\ref{sec:offline}.
+
+% =====================================================================
+\section{Is the world model used?}\label{sec:imagination}
+% =====================================================================
+An agent can reach competence while effectively ignoring a poor world
+model, learning a policy that works despite the predictions rather than
+because of them. We therefore measure the prior directly: roll it
+forward without observations, as imagination does, and compare the
+decoded predictions against the observations actually received.
+
+\paragraph{A measurement error worth recording.} Our first version of
+this measurement compared the decoder's output against raw
+observations. The DreamerV3 decoder is trained against
+$\mathrm{symlog}(o)$, so that comparison applied an unmodelled
+transformation to one side and biased the result against the model. The
+figures reported in draft~v2 of this paper --- quantum $0.0371$ against
+classical $0.0210$ under full observation, and $0.0070$ against
+$0.0052$ under partial --- are superseded. All numbers below are in
+symlog space, which is where the decoder is trained.
+
+\begin{table}[h]\centering\small
+\caption{Open-loop prediction error at horizon $10$, in symlog space,
+mean over seeds $0$--$5$. Lower is better.}
+\begin{tabular}{lccc}
+\toprule
+Condition & Classical prior & Quantum prior & Ratio \\
+\midrule
+Partial observation & $0.00264$ & $\mathbf{0.00195}$ & $0.74\times$ \\
+Full observation    & \pend{re-measure} & \pend{re-measure} & \pend{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Under partial observation the quantum prior is the \emph{better}
+open-loop dynamics model, by $26\%$ --- the condition in which the
+dynamics are history-dependent and a predictive model has something to
+do. This is the measurement that most directly supports the
+architectural hypothesis, and it is also the measurement with the least
+noise, because it is taken over many transitions rather than over
+whole-episode returns.
+\pend{add per-seed values and the paired permutation test; a mean over
+six seeds without dispersion is exactly the sin Section~\ref{sec:power}
+warns against}
+
+Yet the closed-loop returns in the same condition are at parity
+(Table~\ref{tab:po}). \textbf{Agent performance is only weakly coupled
+to world-model accuracy.} The mechanism is visible in the architecture:
+when acting, the agent uses the posterior, which sees real
+observations; the prior only shapes the imagined trajectories used to
+train the actor and critic. A better prior yields better imagined
+training data, which is a second-order effect on returns.
+
+We note that a persistence baseline --- predicting no change --- is
+adversarially strong on a stabilised CartPole, since the agent's task is
+precisely to hold the state still, and we therefore report absolute
+error rather than a ratio to it.
+
+% =====================================================================
+\section{Design space}\label{sec:ablation}
+% =====================================================================
+\begin{pendingbox}{head-width and entangler ablations}
+Both sweeps have run at $40{,}000$ steps and two seeds on the
+non-attentional prior; the analysis is not written, and two seeds is
+below what Section~\ref{sec:power} shows is interpretable. Required
+here:
+\begin{itemize}\itemsep1pt
+\item \textbf{Bottleneck width.} The width surrounding the circuit,
+      reducing the expansion head from $17{,}088$ parameters to
+      $1{,}308$. Performance roughly flat as it shrinks would show the
+      circuit carries the predictive work; a collapse would show the
+      surrounding width does, and would require the bottleneck claim of
+      Section~\ref{sec:arch} to be withdrawn. Given that
+      QASA's~\cite{qasa} revised version attributes its own gain to the
+      bottleneck rather than to quantumness, this is the ablation a
+      referee will ask for first.
+\item \textbf{Entanglement removed.} All two-qubit gates deleted,
+      parameter count unchanged, so the comparison is otherwise exact.
+      Bowles et al.~\cite{bowles2024} report that removing entanglement
+      frequently leaves performance unchanged; an architecture paper
+      should establish this of its own construction rather than leave it
+      to a referee.
+\item \textbf{Quantum block position.} Which encoder block carries the
+      circuit. QASA's central claim is that position matters more than
+      count, and we have adopted their finding without re-testing it in
+      this setting.
+\item \textbf{Qubit count, circuit depth, readout locality.} Not run,
+      and deliberately out of scope: the companion paper~\cite{papera}
+      measures the relevant trade-off directly, finding a
+      $2{,}766\times$ difference in measurement cost between entangler
+      topologies at ten qubits, which bounds what a width sweep could
+      mean for a hardware implementation.
+\end{itemize}
+\end{pendingbox}
+
+% =====================================================================
+\section{Execution on quantum hardware}\label{sec:hardware}
+% =====================================================================
+Both circuits were executed on IonQ Forte-1 at eight data qubits (nine
+wires), two layers, $504$ shots, using the parameter-shift rule: two
+circuit evaluations per gradient, four jobs in total.
+
+\begin{table}[h]\centering\small
+\caption{Gradients measured on IonQ Forte-1 against exact simulation.}
+\begin{tabular}{lccc}
+\toprule
+Entangler & Hardware & Exact & Difference \\
+\midrule
+Brickwork    & $-0.6230$ & $-0.5533$ & $-0.0697$ \\
+Ring cascade & $+0.0734$ & $+0.0380$ & $+0.0354$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both agree with exact simulation within the measurement error. Our
+reconstruction of $\langle Z_0 \rangle$ from the returned probability
+histograms reproduces the PennyLane plugin's own expectation values
+exactly, as rational multiples of $1/504$, which settles the
+bit-ordering convention empirically rather than by assumption --- worth
+stating because an inverted convention would have produced a plausible
+disagreement attributable to noise.
+
+The measured RMS deviation from exact over the four evaluations is
+$0.0594$, against $0.0345$ predicted by IonQ's own Forte-1 noise model
+scaled to this shot count. We report this as indicative only: it is a
+single RMS over four evaluations at one parameter point, carrying
+roughly $35\%$ relative uncertainty, and the parameter point chosen has
+a ring-cascade gradient about $2.5\times$ larger than the landscape
+average. The hardware run validates that measurements agree with
+simulation; it is not evidence about typical gradient magnitudes.
+
+\paragraph{Why only four jobs.} Trapped-ion time is billed per job, and
+these four cost \pend{amount} in total. Training on hardware is not
+merely expensive but infeasible: at the parameter count and step count
+of one $80{,}000$-step run, the parameter-shift rule requires on the
+order of $10^{12}$ shots. Hardware execution here is inference-only and
+is intended to establish that the circuits transfer, not that the
+training does.
+
+% =====================================================================
+\section{Discussion}
+% =====================================================================
+\paragraph{What this establishes.} A quantum transformer can serve as
+the generative dynamics model of a model-based agent, trained end to end
+through multi-step imagination, with the resulting policy learning
+entirely from trajectories generated through a quantum circuit. The
+construction is stable, reaches competence, admits a capacity-matched
+classical control differing in exactly one sublayer, and runs on
+hardware. Measured as a dynamics model under partial observation it is
+$26\%$ better than that control.
+
+\paragraph{What it does not.} We make no claim of quantum advantage, and
+the theory says none is available here: a data re-uploading circuit
+computes a truncated Fourier series whose frequencies are fixed by the
+encoding, and a classical surrogate spanning the same spectrum matches
+it with eight parameters against the circuit's
+thirty~\cite{schuld2021,papera}. Closed-loop returns are at parity, and
+the sample sizes at which they could be shown otherwise are out of
+reach at $27$ hours per seed.
+
+\paragraph{Why the architecture matters anyway.} It is a prerequisite
+for questions that cannot be asked without it: whether quantum dynamics
+models help where the dynamics are \emph{themselves} quantum --- the
+natural next target, where the Fourier argument no longer bounds the
+advantage away --- whether they transfer to hardware, and how they
+behave under finite measurement. The contribution is a working
+instrument, honestly characterised, not a benchmark win.
+
+% =====================================================================
+\section{Limitations}
+% =====================================================================
+\begin{itemize}\itemsep2pt
+\item A single architecture family, at small qubit count, simulated
+      exactly during training. Hardware execution was inference-only.
+\item Closed-loop evidence is a viability demonstration, not a
+      comparison. Five seeds on full observation and seven on partial,
+      against a requirement of roughly $14$ and $130$ respectively.
+\item Evaluation on low-dimensional control only. Scaling to pixel
+      observations, where world models are most valuable, is untested.
+\item The offline context ablation is being re-run after a width
+      confound (Section~\ref{sec:offline}); the superseded version
+      should not be cited from any earlier draft.
+\item One full-observation seed is not reproducible across runs by a
+      factor of $3.6$, cause not yet established
+      (Section~\ref{sec:closedloop}).
+\item The quantum prior costs roughly $12\times$ the classical control
+      in wall clock on the offline task ($\sim\!1{,}700$\,s against
+      $\sim\!150$\,s per seed). \pend{give the closed-loop ratio from
+      runs known to have run uninterrupted; the earlier figure of
+      $5.4\times$ is contaminated by machine sleep}
+\item All quantitative claims are on one environment. A second
+      (Pendulum) exists in the codebase but its continuous-action paths
+      are untested.
+\end{itemize}
+
+% =====================================================================
+\section{Reproducibility}
+% =====================================================================
+Implementation, verification harness, configurations and run records at
+\pend{repository URL and archival DOI}. The world model is a faithful
+small-scale DreamerV3; the quantum transformer prior is a drop-in
+substitution installed on an already-constructed agent, so the two arms
+differ in exactly one sublayer and the baseline implementation is
+unmodified. Run directories encode every configuration setting,
+training refuses to write into a directory that already contains a
+completed run, and the sweep driver refuses to start when a
+result-affecting setting absent from the directory name differs from its
+default.
+
+We report the failures as well as the results --- the overwrite, the
+symlog mismatch, the width confound, the irreproducible seed --- because
+each was silent, each produced plausible numbers, and the reader has no
+way to rule them out of a paper that does not mention them.
+
+% =====================================================================
+\appendix
+\section{Work remaining}\label{app:remaining}
+% =====================================================================
+In priority order. Items marked \textbf{blocking} must be resolved
+before submission.
+
+\begin{enumerate}\itemsep3pt
+\item \textbf{Blocking.} Quantum transformer closed-loop runs, five
+      seeds per arm at $K = 4$, partial observation
+      (Section~\ref{sec:closedloop}). Without these the paper's titular
+      architecture has never been run closed-loop.
+\item \textbf{Blocking.} Width-matched offline sweep, $K \in \{2,4,8\}$,
+      eight seeds, both arms (Section~\ref{sec:offline}). The primary
+      evidence.
+\item \textbf{Blocking.} Confirm every partial-observation run in
+      Table~\ref{tab:po} uses the same prior architecture. A window
+      existed in which \texttt{prior\_arch} was live but the run name
+      did not encode it.
+\item \textbf{Blocking.} Per-seed values and paired test for the
+      open-loop comparison of Section~\ref{sec:imagination}; re-measure
+      the full-observation row post-symlog-fix.
+\item Bottleneck-width and entanglement-removed ablations, at enough
+      seeds to interpret (Section~\ref{sec:ablation}).
+\item Resolve the seed-$0$ reproducibility discrepancy; test explicitly
+      whether thread count changes trajectories.
+\item Learning curves and circuit gradient-magnitude figure.
+\item KL trajectories for both arms.
+\item $K = 16$ as a fourth context point.
+\item Record the novelty search: strings, databases, dates
+      (Appendix~\ref{app:novelty}).
+\item Repository URL, archival DOI, hardware cost figure, and full
+      citation details for all references.
+\end{enumerate}
+
+% =====================================================================
+\section{Novelty search}\label{app:novelty}
+% =====================================================================
+\begin{pendingbox}{novelty search record}
+The search was run and cleared. Record here, so the first-of-its-kind
+claim is auditable: databases queried, exact search strings, date of
+each query, number of hits screened, and the specific near misses with
+the reason each was excluded. The claim in the abstract is only as good
+as this appendix.
+\end{pendingbox}
+
+% =====================================================================
+\bibliographystyle{unsrtnat}
+\begin{thebibliography}{9}
+\bibitem{hafner2023} D.~Hafner, J.~Pasukonis, J.~Ba, T.~Lillicrap.
+  \emph{Mastering Diverse Domains through World Models} (DreamerV3),
+  arXiv:2301.04104. \pend{confirm venue and year of record}
+\bibitem{transdreamer} C.~Chen, Y.-F. Wu, J.~Yoon, S.~Ahn.
+  \emph{TransDreamer: Reinforcement Learning with Transformer World
+  Models}, arXiv:2202.09481 (2022). \pend{verify author list}
+\bibitem{chen2020} S.~Y.-C. Chen et al. \emph{Variational Quantum
+  Circuits for Deep Reinforcement Learning}. \pend{full citation}
+\bibitem{skolik2023} \emph{Variational Quantum Circuit Design for
+  Quantum Reinforcement Learning on Continuous Environments},
+  arXiv:2312.13798. \pend{verify authors}
+\bibitem{dreamqas} \emph{DreamQAS: Learning a Decision-Useful World
+  Model for VQE-Efficient Quantum Architecture Search},
+  arXiv:2607.29491. \pend{verify authors}
+\bibitem{qasa} \emph{Quantum Adaptive Self-Attention for Quantum
+  Transformer Models}, arXiv:2504.05336. \pend{verify authors; cite the
+  revised version, which attributes its reported gain to a low-rank
+  bottleneck rather than to quantumness}
+\bibitem{schuld2021} M.~Schuld, R.~Sweke, J.~J. Meyer. \emph{Effect of
+  data encoding on the expressive power of variational quantum machine
+  learning models}, Phys.\ Rev.\ A \textbf{103}, 032430 (2021).
+\bibitem{bowles2024} J.~Bowles, S.~Ahmed, M.~Schuld. \emph{Better than
+  classical? The subtle art of benchmarking quantum machine learning
+  models}, arXiv:2403.07059 (2024).
+\bibitem{papera} V.~Liutarevich. \emph{How Many Seeds? Dispersion,
+  Resolving Power, and a Failed Replication in Quantum Sequence
+  Modelling}. \pend{companion paper; cite as submitted or as preprint}
+\end{thebibliography}
+
+\end{document}
