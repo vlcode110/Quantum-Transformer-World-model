@@ -82,8 +82,7 @@ QASA-repro/              quantum attention reproduction, the forecasting
 *.sh                     sweep drivers: resumable, locked against
                          double-launch, skip completed work.
 collect_all.py           consolidates every run record into AUDIT_RAW.json.
-audit_paperB.py          verifies every reported number against the raw
-                         run records.
+
 ```
 
 The repository is self-contained: `DreamerV3/` and `QASA-repro/` were
@@ -132,7 +131,6 @@ Verify the reported numbers against the records:
 
 ```bash
 python collect_all.py        # gathers every run into AUDIT_RAW.json
-python audit_paperB.py       # recomputes and checks each reported number
 ```
 
 ---
