@@ -1,23 +1,20 @@
-# A Quantum Transformer World Model — code, run records and papers
+# A Quantum Transformer World Model — code and run records
 
-Implementation and complete experimental records for two papers on
-quantum sequence modelling and model-based reinforcement learning.
+Implementation and complete experimental records for work on quantum
+sequence modelling and model-based reinforcement learning.
 
-**Paper B — architecture.** *A Quantum Transformer World Model for
-Model-Based Reinforcement Learning.* A transformer over a window of
-recent latent states, with a parameterised quantum circuit (PQC) as the
-token-mixing block of one encoder layer, serving as the dynamics prior of
-a DreamerV3-style recurrent state-space model and trained end to end.
+**The architecture.** A transformer over a window of recent latent
+states, with a parameterised quantum circuit (PQC) as the token-mixing
+block of one encoder layer, serving as the dynamics prior of a
+DreamerV3-style recurrent state-space model and trained end to end.
 Because latent imagination rolls the model forward on the prior alone,
 the policy trains entirely on trajectories generated through a quantum
-circuit. `Paper_B/PaperB_Quantum.tex`
+circuit.
 
-**Paper A — methodology.** *How Many Seeds? Dispersion, Resolving Power,
-and Silent Failure in Quantum Sequence Modelling.* Seed-to-seed
-dispersion measured across seven populations, a failed replication,
-false-positive rates resampled from observed dispersion, and a case
-series of analysis failures that produced plausible wrong numbers.
-`Paper_A/PaperA_Quantum.tex`
+**The methodology work.** Seed-to-seed dispersion measured across seven
+populations, a failed replication, false-positive rates resampled from
+observed dispersion, and a case series of analysis failures that produced
+plausible wrong numbers.
 
 ---
 
@@ -45,7 +42,7 @@ advantage.
   partial observation the quantum transformer prior leads the
   capacity-matched classical twin by 144 return points over eight seeds
   (*p* = 0.039, ahead in 7/8). It is one of three nominally significant
-  cells among 30 comparisons across both papers, against 1.5 expected.
+  cells among 30 comparisons recorded here, against 1.5 expected.
   Replication at fresh seeds is in progress; until it lands, the result
   should not be cited as established.
 - **Dispersion spans 29×** (sd of per-seed log-ratio 0.014 to 0.404)
@@ -53,11 +50,10 @@ advantage.
   sample needed to detect a 10% effect accordingly runs from 6 seeds to
   150.
 
-Both papers document the failures as well as the findings. Paper A §8 is
-a case series of seven analysis errors that produced plausible wrong
-numbers rather than crashes; four changed a reported result. Two were
-found in Paper A itself, by running the audit that paper recommends on
-its own pipeline.
+The records document the failures as well as the findings: a case series
+of seven analysis errors that produced plausible wrong numbers rather
+than crashes, four of which changed a reported result. Two were found by
+running the audit on the pipeline that recommends it.
 
 ---
 
@@ -83,11 +79,10 @@ QASA-repro/              quantum attention reproduction, the forecasting
                          tasks (sine, noisy sine, Mackey-Glass), the
                          gradient-variance probe, the classical Fourier
                          surrogate, and the IonQ hardware harness.
-Paper_A/  Paper_B/       LaTeX sources, figure generators, figures, and
-                         the audit scripts.
 *.sh                     sweep drivers: resumable, locked against
                          double-launch, skip completed work.
-audit_paperB.py          verifies every number in Paper B against the raw
+collect_all.py           consolidates every run record into AUDIT_RAW.json.
+audit_paperB.py          verifies every reported number against the raw
                          run records.
 ```
 
@@ -98,12 +93,11 @@ location and fall back to the historical out-of-tree paths, so existing
 local checkouts keep working.
 
 **Checkpoints are not committed** — see `.gitignore` for why. Every
-number in both papers derives from the committed `result.json`,
-`config.json`, `log.csv` and `grad_log.json` files. Trajectory caches are
-also excluded: `dataset.py` regenerates them deterministically, and each
-run records the cache hash as `dataset_version` so results built on
-different trajectory versions can be distinguished rather than silently
-pooled.
+reported number derives from the committed `result.json`, `config.json`,
+`log.csv` and `grad_log.json` files. Trajectory caches are also excluded:
+`dataset.py` regenerates them deterministically, and each run records the
+cache hash as `dataset_version` so results built on different trajectory
+versions can be distinguished rather than silently pooled.
 
 ---
 
@@ -111,7 +105,8 @@ pooled.
 
 ```bash
 python -m venv ~/.venvs/qtwm && source ~/.venvs/qtwm/bin/activate
-pip install -r requirements.txt     # see QASA-repro/check_env.py for version traps
+pip install -r requirements.txt
+python QASA-repro/check_env.py     # version traps, named with their fixes
 ```
 
 Offline dynamics, one configuration:
@@ -133,18 +128,28 @@ python train_agent.py --task cartpole --quantum true --seed 0 \
 python reevaluate.py --episodes 50
 ```
 
-Verify the papers against the records:
+Verify the reported numbers against the records:
 
 ```bash
-python audit_paperB.py
-python Paper_A/audit_paperA.py
+python collect_all.py        # gathers every run into AUDIT_RAW.json
+python audit_paperB.py       # recomputes and checks each reported number
 ```
 
-`audit_paperA.py` currently **fails two checks**, deliberately left
-visible: the forecasting data file contains three appended experiments
-plus a failed run, and one loader pools five model widths. Both are
-documented in Paper A §8.3 and are the subject of open work. Do not use
-`Paper_A/make_figures.py`'s CartPole row.
+---
+
+## Known issues
+
+Left visible rather than quietly fixed, because both are the subject of
+open work:
+
+- **The forecasting data file contains three appended experiments plus a
+  failed run.** Anything that reads it whole will pool populations that
+  should be kept separate.
+- **One loader pools five model widths.** Results at different capacities
+  are aggregated as though they were replicates of one setting.
+
+Both are analysis-side, not run-side: the underlying run records are
+sound, and the configuration is recorded in full for every run.
 
 ---
 
@@ -152,8 +157,8 @@ documented in Paper A §8.3 and are the subject of open work. Do not use
 
 **Aggregation keys.** Every analysis script keys on the complete run
 configuration and **halts on collision** rather than silently selecting a
-winner. This is not stylistic. Five of the seven failures in Paper A's
-case series were a quantity that varied without being recorded as having
+winner. This is not stylistic. Five of the seven failures in the case
+series were a quantity that varied without being recorded as having
 varied, and two of them destroyed completed runs or fabricated an effect
 size while leaving the *p*-value unchanged. If you add a setting, add it
 to the key.
@@ -202,15 +207,9 @@ file in this tree and must not be.
 
 ## Status
 
-Not a finished artefact. `Paper_A/PaperA_Quantum.tex` and
-`Paper_B/PaperB_Quantum.tex` both carry visible `\pend{}` placeholders
-marking outstanding items; compile with `\draftfalse` to see the papers
-without them. Appendix A of each lists what remains.
-
-## Citing
-
-Please cite the papers rather than the repository.
-`\pend{arXiv identifiers once posted}`
+Not a finished artefact. The replication at fresh seeds is in progress,
+and the two known issues above are open. Treat the single positive result
+as provisional until the replication lands.
 
 ## Licence
 

@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------------
+# Everything needed to run Phase 1-3, DreamerV3 and QASA-repro from a
+# fresh clone. The union of QASA-repro/requirements.txt and
+# DreamerV3/requirements.txt, plus scipy, which Phase 3 needs.
+#
+# Run `python QASA-repro/check_env.py` after installing. The pins below
+# are the three version traps this project has already lost time to;
+# check_env.py detects them and names the fix, because each one surfaces
+# as an error far from its cause.
+#
+# Python 3.11 is recommended. On 3.9 pip silently caps PennyLane at 0.38
+# and pennylane-ionq at 0.41, which removes the IonQ noise models.
+# ---------------------------------------------------------------------
+
+numpy>=1.24,<2       # NumPy 2 against torch <2.3 raises "Numpy is not
+                     # available"; the torch wheels for py3.9 are built
+                     # against NumPy 1.x
+torch>=2.1
+pennylane>=0.35
+autoray<0.7          # PennyLane <=0.38 (the last py3.9 line) needs the
+                     # old autoray API; 0.7 moved NumpyMimic and breaks
+                     # the import
+scipy>=1.10          # Phase_3_Quantum_Native/spin_env.py: expm for the
+                     # exact transverse-field Ising propagator
+gymnasium[classic-control]>=0.29   # CartPole, Phases 1-2 and DreamerV3
+matplotlib>=3.7      # analyze.py in each phase, plot.py, draw_circuit.py
+
+# --- hardware only, not needed to reproduce any simulated result.
+# The IonQ Forte-1 harness in QASA-repro (hardware_demo.py, ionq_check.py,
+# analyze_hardware.py). IONQ_API_KEY is read from the environment and must
+# never be written to a file in this tree.
+# pennylane-ionq>=0.41
+
+# --- optional: faster statevector simulation. Build must match the
+# installed PennyLane, or it fails in a way that does not name the cause.
+# pennylane-lightning
